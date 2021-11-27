@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="850.0" prefWidth="1024.0" style="-fx-background-color: #9CD2D2#9CD2D2;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.pascal.library.controller.MainController">
+    <children>
+        <VBox alignment="TOP_RIGHT" layoutX="8.0" layoutY="50.0" prefHeight="200.0" prefWidth="46.0" spacing="21.0">
+            <children>
+                <Label text="ID" textFill="WHITE">
+                    <font>
+                        <Font size="14.0" />
+                    </font>
+                </Label>
+                <Label text="Ren" textFill="WHITE">
+                    <font>
+                        <Font size="14.0" />
+                    </font>
+                </Label>
+                <Label text="Lieu" textFill="WHITE">
+                    <font>
+                        <Font size="14.0" />
+                    </font>
+                </Label>
+                <Label text="Période" textFill="WHITE">
+                    <font>
+                        <Font size="14.0" />
+                    </font>
+                </Label>
+            </children>
+        </VBox>
+        <VBox layoutX="61.0" layoutY="46.0" prefHeight="156.0" prefWidth="224.0" spacing="13.0">
+            <children>
+                <TextField fx:id="tfId" />
+                <TextField fx:id="tfTitle" />
+                <TextField fx:id="tfAuthor" />
+                <TextField fx:id="tfYear" />
+            </children>
+        </VBox>
+        <TableView fx:id="tvRencontre" layoutX="512.0" layoutY="30.0" onMouseClicked="#handleMouseAction" prefHeight="95.0" prefWidth="498.0">
+            <columns>
+                <TableColumn fx:id="colId" prefWidth="72.0" text="ID" />
+                <TableColumn fx:id="colNomRencontre" prefWidth="78.0" text="Rencontre" />
+                <TableColumn fx:id="colPeriodicite" minWidth="0.0" prefWidth="210.0" text="Périodicité" />
+                <TableColumn fx:id="colLieu" prefWidth="87.0" text="Lieu" />
+            </columns>
+        </TableView>
+        <Button fx:id="btnInsert" layoutX="10.0" layoutY="801.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="26.0" prefWidth="88.0" style="-fx-background-color: #4AC9D8#4AC9D8;" text="Insert" textFill="WHITE">
+            <graphic>
+                <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@../../../images/add.png" />
+                    </image>
+                </ImageView>
+            </graphic>
+            <cursor>
+                <Cursor fx:constant="HAND" />
+            </cursor></Button>
+        <Button fx:id="btnUpdate" layoutX="104.0" layoutY="800.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="26.0" prefWidth="88.0" style="-fx-background-color: #4AC9D8#4AC9D8;" text="Update" textFill="WHITE">
+            <graphic>
+                <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@../../../images/update-arrows.png" />
+                    </image>
+                </ImageView>
+            </graphic>
+            <cursor>
+                <Cursor fx:constant="HAND" />
+            </cursor></Button>
+        <Button fx:id="btnDelete" layoutX="207.0" layoutY="800.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="26.0" prefWidth="88.0" style="-fx-background-color: #FF8D8D#FF8D8D;" text="Delete" textFill="WHITE">
+            <graphic>
+                <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@../../../images/delete.png" />
+                    </image>
+                    <cursor>
+                        <Cursor fx:constant="HAND" />
+                    </cursor>
+                </ImageView>
+            </graphic>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor></Button>
+      <Text layoutX="691.0" layoutY="24.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Liste des rencontres " />
+      <TableView fx:id="tvGroupe" layoutX="512.0" layoutY="165.0" onMouseClicked="#handleMouseAction" prefHeight="95.0" prefWidth="498.0">
+         <columns>
+            <TableColumn fx:id="colId1" prefWidth="72.0" text="ID" />
+            <TableColumn fx:id="colNomRencontre1" prefWidth="120.0" text="Nom titre" />
+            <TableColumn fx:id="colLieu1" prefWidth="103.0" text="Durée titre" />
+         </columns>
+      </TableView>
+      <Text layoutX="104.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Bienvenue sur 'un air de Java'">
+         <font>
+            <Font name="Book Antiqua Bold Italic" size="30.0" />
+         </font>
+      </Text>
+      <ComboBox fx:id="cbTitre" layoutX="340.0" layoutY="211.0" prefWidth="150.0" promptText="Vos titres à choisir" />
+      <Text layoutX="29.0" layoutY="230.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Choisissez votre titre pour lister le groupe qui l'a joué " />
+    </children>
+</AnchorPane>
