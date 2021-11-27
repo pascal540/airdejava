@@ -105,7 +105,7 @@
             <Font name="Book Antiqua Bold Italic" size="30.0" />
          </font>
       </Text>
-      <ComboBox fx:id="cbTitre" layoutX="340.0" layoutY="211.0" prefWidth="150.0" promptText="Vos titres à choisir" />
+      <ComboBox fx:id="cbTitre" layoutX="340.0" layoutY="211.0" onAction="#RemplissageTvTitre" prefWidth="150.0" promptText="Vos titres à choisir" />
       <Text layoutX="29.0" layoutY="230.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Choisissez votre titre pour lister le groupe qui l'a joué " />
     </children>
 </AnchorPane>

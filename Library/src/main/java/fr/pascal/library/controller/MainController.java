@@ -22,6 +22,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ResourceBundle;
+
+import com.mysql.cj.jdbc.CallableStatement;
+
 import java.util.LinkedList;
 
 public class MainController implements Initializable {
@@ -42,6 +45,8 @@ public class MainController implements Initializable {
     @FXML
     private ComboBox<String> cbTitre;
     
+    ObservableList<Titre> nomTitreList = FXCollections.observableArrayList();
+  
     @FXML
     void handleButtonAction(ActionEvent event) throws SQLException {
         if (event.getSource() == btnInsert) {
@@ -73,8 +78,9 @@ public class MainController implements Initializable {
         tfTitle.setText(rencontre.get_nomRencontre());
 
     }
+
     /*-------------------------------------------------------------------------------*/
-    /* Remplissage table rencontre*/
+    /* Remplissage table rencontre */
     /*-------------------------------------------------------------------------------*/
     private ObservableList<Rencontre> getRencontreList() {
         ObservableList<Rencontre> rencontreList = FXCollections.observableArrayList();
@@ -96,7 +102,7 @@ public class MainController implements Initializable {
         }
         return rencontreList;
     }
-    
+
     private void displayTableView() {
         ObservableList<Rencontre> listRencontre = getRencontreList();
         // On fait correspondre chacune des propriétés de l'objet rencontre avec chacune
@@ -108,7 +114,8 @@ public class MainController implements Initializable {
         tvRencontre.setItems(listRencontre);
 
     }
-   // Méthodes de remplissages de comboBox cdTitre
+
+    // Méthodes de remplissages de comboBox cdTitre
     private void RemplissageComboBoxTitre() {
 
         LinkedList<String> combo = new LinkedList<>();
@@ -122,14 +129,44 @@ public class MainController implements Initializable {
             ResultSet rs = statement.executeQuery(query);
             while (rs.next()) {
 
-                combo.add(rs.getString("nom_titre"));
+                combo.add(rs.getString("nomTitre"));
             }
             cbTitre.getItems().addAll(combo);
         } catch (Exception e) {
             e.printStackTrace();
-            System.out.println("ERREUR DANS LA REQUETE");
+            System.out.println("ERREUR DANS LA REQUETE Titre");
         }
     }
+
+    // Remplissage de la tableView Titre apres choix dans le combobox CbTitre
+    @FXML
+    private ObservableList<Titre> RemplissageTvTitre(ActionEvent event) throws SQLException {
+
+        String res = cbTitre.getValue();
+        nomTitreList.clear();
+
+        DataBaseConnection dataBaseConnection = new DataBaseConnection();
+        Connection connection = dataBaseConnection.getConnection();
+        String query = "call quel_groupe_a_jouer_ce_titre(?)";
+        CallableStatement cs = (CallableStatement) connection.prepareCall(query);
+
+        cs.setString(1, res);
+        cs.execute();
+        try {
+            ResultSet rs = cs.getResultSet();
+            while (rs.next()) {
+                Titre titre = new Titre();
+                titre.set_nomTitre(rs.getString("nomTitre"));
+                nomTitreList.add(titre);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Erreur dans la requete nomGroupe");
+        }
+        connection.close();
+        return  nomTitreList;
+    }
+    // fin
 
     // private void insertBook() throws SQLException {
     // String query = "INSERT INTO book VALUES ('" + tfId.getText() + "', '" +
@@ -158,18 +195,18 @@ public class MainController implements Initializable {
 
     // Méthode qui permet de factoriser la connection à la BDD, en même temps que
     // d'exécuter nos requêtes
-    private void executeQuery(String query) throws SQLException {
-        DataBaseConnection dataBaseConnection = new DataBaseConnection();
-        Connection connection = dataBaseConnection.getConnection();
-        try {
-            Statement statement = connection.createStatement();
-            statement.executeUpdate(query);
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("Erreur SQL");
-        }
-        connection.close();
-    }
+    // private void executeQuery(String query) throws SQLException {
+    // DataBaseConnection dataBaseConnection = new DataBaseConnection();
+    // Connection connection = dataBaseConnection.getConnection();
+    // try {
+    // Statement statement = connection.createStatement();
+    // statement.executeUpdate(query);
+    // } catch (Exception e) {
+    // e.printStackTrace();
+    // System.out.println("Erreur SQL");
+    // }
+    // connection.close();
+    // }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
