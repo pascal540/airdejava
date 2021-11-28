@@ -39,6 +39,8 @@ public class MainController implements Initializable {
     @FXML
     private TableView<Groupe> tvGroupe;
     @FXML
+    private TableColumn<Groupe, String> colDenominationGroupe;
+    @FXML
     private TableColumn<Rencontre, Integer> colId;
     @FXML
     private TableColumn<Rencontre, String> colNomRencontre, colLieu, colPeriodicite;
@@ -140,7 +142,7 @@ public class MainController implements Initializable {
 
     // Remplissage de la tableView Titre apres choix dans le combobox CbTitre
     @FXML
-    private ObservableList<Titre> RemplissageTvTitre(ActionEvent event) throws SQLException {
+    private ObservableList<Titre> RemplissageTvGroupe(ActionEvent event) throws SQLException {
 
         String res = cbTitre.getValue();
         nomTitreList.clear();
@@ -150,8 +152,8 @@ public class MainController implements Initializable {
         String query = "call quel_groupe_a_jouer_ce_titre(?)";
         CallableStatement cs = (CallableStatement) connection.prepareCall(query);
 
-        cs.setString(1, res);
-        cs.execute();
+        cs.setString(1, res);// passage du titre à la procedure stockee
+        cs.execute(); // execute la procedure
         try {
             ResultSet rs = cs.getResultSet();
             while (rs.next()) {
