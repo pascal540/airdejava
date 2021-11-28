@@ -25,9 +25,13 @@ public class Groupe {
         this._DenominationGroupe = _DenominationGroupe;
     }
 
-    public Groupe() {
+    public Groupe(String _DenominationGroupe) {
+        this._DenominationGroupe = _DenominationGroupe;
     }
     
+    public Groupe() {
+        
+    }
 
 
     /**

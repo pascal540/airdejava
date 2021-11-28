@@ -46,8 +46,11 @@ public class MainController implements Initializable {
     private TableColumn<Rencontre, String> colNomRencontre, colLieu, colPeriodicite;
     @FXML
     private ComboBox<String> cbTitre;
+    @FXML
+    private TableColumn<Groupe,String> colNomGroupe;
     
     ObservableList<Titre> nomTitreList = FXCollections.observableArrayList();
+    ObservableList<Groupe> nomGroupeList = FXCollections.observableArrayList();
   
     @FXML
     void handleButtonAction(ActionEvent event) throws SQLException {
@@ -81,9 +84,12 @@ public class MainController implements Initializable {
 
     }
 
-    /*-------------------------------------------------------------------------------*/
-    /* Remplissage table rencontre */
-    /*-------------------------------------------------------------------------------*/
+    /* OUverture tableview rencontre et lancement de la requete stockée*/
+        /**
+         * 
+         * @return rencontreList
+         */
+    
     private ObservableList<Rencontre> getRencontreList() {
         ObservableList<Rencontre> rencontreList = FXCollections.observableArrayList();
         DataBaseConnection dataBaseConnection = new DataBaseConnection();
@@ -105,10 +111,13 @@ public class MainController implements Initializable {
         return rencontreList;
     }
 
-    private void displayTableView() {
+    /**
+     * Remplissage tableview Rencontre 
+     */
+    private void displayTableViewRencontre() {
         ObservableList<Rencontre> listRencontre = getRencontreList();
-        // On fait correspondre chacune des propriétés de l'objet rencontre avec chacune
-        // des colonnes du TableView
+        // On fait correspondre chacune des propriétés de l'objet rencontre avec chacune  des colonnes du TableView
+        
         colId.setCellValueFactory(new PropertyValueFactory<Rencontre, Integer>("_id"));
         colNomRencontre.setCellValueFactory(new PropertyValueFactory<Rencontre, String>("_nomRencontre"));
         colLieu.setCellValueFactory(new PropertyValueFactory<Rencontre, String>("_lieuRencontre"));
@@ -140,12 +149,13 @@ public class MainController implements Initializable {
         }
     }
 
-    // Remplissage de la tableView Titre apres choix dans le combobox CbTitre
+    // Remplissage de la tableView Groupe apres choix dans le combobox CbTitre
     @FXML
-    private ObservableList<Titre> RemplissageTvGroupe(ActionEvent event) throws SQLException {
+    private ObservableList<Groupe> RemplissageTvGroupe(ActionEvent event) throws SQLException {
 
         String res = cbTitre.getValue();
-        nomTitreList.clear();
+        // System.out.println(res);
+       nomGroupeList.clear();
 
         DataBaseConnection dataBaseConnection = new DataBaseConnection();
         Connection connection = dataBaseConnection.getConnection();
@@ -157,17 +167,23 @@ public class MainController implements Initializable {
         try {
             ResultSet rs = cs.getResultSet();
             while (rs.next()) {
-                Titre titre = new Titre();
-                titre.set_nomTitre(rs.getString("nomTitre"));
-                nomTitreList.add(titre);
+                Groupe NomGroupe = new Groupe();
+                NomGroupe.set_DenominationGroupe(rs.getString("_DenominationGroupe"));
+                nomGroupeList.add(NomGroupe);
             }
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("Erreur dans la requete nomGroupe");
         }
         connection.close();
-        return  nomTitreList;
+        return nomGroupeList;
     }
+
+    public void AffichageNomDesGroupes() {
+       colNomGroupe.setCellValueFactory(new PropertyValueFactory<Groupe, String>("_DenominationGroupe"));
+        tvGroupe.setItems(nomGroupeList);
+    }
+    
     // fin
 
     // private void insertBook() throws SQLException {
@@ -213,7 +229,8 @@ public class MainController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         // getRencontreList();
-        displayTableView();
+        displayTableViewRencontre();
         RemplissageComboBoxTitre();
+        AffichageNomDesGroupes();
     }
 }
