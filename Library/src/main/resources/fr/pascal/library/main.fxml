@@ -92,12 +92,13 @@
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor></Button>
-      <Text layoutX="691.0" layoutY="24.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Liste des rencontres " />
+      <Text layoutX="691.0" layoutY="24.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Liste des rencontres ">
+         <font>
+            <Font size="20.0" />
+         </font></Text>
       <TableView fx:id="tvGroupe" layoutX="512.0" layoutY="165.0" onMouseClicked="#handleMouseAction" prefHeight="95.0" prefWidth="498.0">
          <columns>
-            <TableColumn fx:id="colId" prefWidth="72.0" text="ID" />
-            <TableColumn fx:id="colNomGroupe" prefWidth="120.0" text="Nom groupe" />
-            <TableColumn fx:id="colDuree" prefWidth="103.0" text="Durée titre" />
+            <TableColumn fx:id="colNomGroupe" prefWidth="371.0" text="Nom groupe" />
          </columns>
       </TableView>
       <Text layoutX="104.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Bienvenue sur 'un air de Java'">
@@ -107,6 +108,9 @@
       </Text>
       <ComboBox fx:id="cbTitre" layoutX="340.0" layoutY="211.0" onAction="#RemplissageTvGroupe" prefWidth="150.0" promptText="Vos titres à choisir" />
       <Text layoutX="29.0" layoutY="230.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Choisissez votre titre pour lister le groupe qui l'a joué " />
-      <Text layoutX="691.0" layoutY="155.0" strokeType="OUTSIDE" strokeWidth="0.0" text="LIste des groupes" />
+      <Text layoutX="691.0" layoutY="155.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Liste des groupes">
+         <font>
+            <Font name="Book Antiqua" size="19.0" />
+         </font></Text>
     </children>
 </AnchorPane>

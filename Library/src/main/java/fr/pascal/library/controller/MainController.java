@@ -106,7 +106,7 @@ public class MainController implements Initializable {
 
         } catch (Exception e) {
             e.printStackTrace();
-            System.out.println("Erreur dans le SELECT *");
+            System.out.println("Erreur dans le SELECT Rencontre");
         }
         return rencontreList;
     }
@@ -126,7 +126,7 @@ public class MainController implements Initializable {
 
     }
 
-    // Méthodes de remplissages de comboBox cdTitre
+    // Méthodes de remplissages de comboBox cdTitre avec tous les titres de repertoire
     private void RemplissageComboBoxTitre() {
 
         LinkedList<String> combo = new LinkedList<>();
@@ -134,18 +134,20 @@ public class MainController implements Initializable {
         DataBaseConnection dataBaseConnection = new DataBaseConnection();
         Connection connection = dataBaseConnection.getConnection();
 
-        String query = "call affichageTitre";
+        //  String query = "affichage_titres_repertoire";
+        String query ="SELECT TITRE_REPERTOIRE FROM repertoire";
+        
         try {
             Statement statement = connection.createStatement();
             ResultSet rs = statement.executeQuery(query);
             while (rs.next()) {
 
-                combo.add(rs.getString("nomTitre"));
+                  combo.add(rs.getString("titre_repertoire"));
             }
             cbTitre.getItems().addAll(combo);
         } catch (Exception e) {
             e.printStackTrace();
-            System.out.println("ERREUR DANS LA REQUETE Titre");
+            System.out.println("ERREUR DANS LA REQUETE Repertoire");
         }
     }
 
@@ -154,12 +156,13 @@ public class MainController implements Initializable {
     private ObservableList<Groupe> RemplissageTvGroupe(ActionEvent event) throws SQLException {
 
         String res = cbTitre.getValue();
-        // System.out.println(res);
+        
        nomGroupeList.clear();
 
         DataBaseConnection dataBaseConnection = new DataBaseConnection();
         Connection connection = dataBaseConnection.getConnection();
-        String query = "call quel_groupe_a_jouer_ce_titre(?)";
+       String query = "call quel_groupe_a_jouer_ce_titre(?)";
+        
         CallableStatement cs = (CallableStatement) connection.prepareCall(query);
 
         cs.setString(1, res);// passage du titre à la procedure stockee
@@ -168,7 +171,8 @@ public class MainController implements Initializable {
             ResultSet rs = cs.getResultSet();
             while (rs.next()) {
                 Groupe NomGroupe = new Groupe();
-                NomGroupe.set_DenominationGroupe(rs.getString("_DenominationGroupe"));
+                NomGroupe.set_DenominationGroupe(rs.getString("nomGroupe"));
+                System.out.println(NomGroupe);
                 nomGroupeList.add(NomGroupe);
             }
         } catch (Exception e) {
