@@ -112,5 +112,17 @@
          <font>
             <Font name="Book Antiqua" size="19.0" />
          </font></Text>
+      <ComboBox fx:id="cbLieuEtGroupe" layoutX="340.0" layoutY="317.0" onAction="#RemplissagetvRencontreLieuEtGroupe" prefWidth="150.0" promptText="Quel titre ?" />
+      <Text layoutX="29.0" layoutY="326.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Choisissez votre titre pour savoir où et qul l'a interpreté" wrappingWidth="285.26953125" />
+      <TableView fx:id="tvRencontreLieuEtGroupe" layoutX="512.0" layoutY="295.0" onMouseClicked="#handleMouseAction" prefHeight="95.0" prefWidth="498.0">
+         <columns>
+            <TableColumn fx:id="ColGroupe" prefWidth="73.0" text="Groupe" />
+            <TableColumn fx:id="colLieuRencontre" prefWidth="72.0" text="Lieu rencontre" />
+            <TableColumn fx:id="colLieuPresta" prefWidth="78.0" text="Lieu prestation" />
+            <TableColumn fx:id="colDateDebut" minWidth="0.0" prefWidth="84.0" text="Date début" />
+            <TableColumn fx:id="colDateFin" prefWidth="107.0" text="Date fin" />
+            <TableColumn fx:id="colPeriode" prefWidth="73.0" text="Période" />
+         </columns>
+      </TableView>
     </children>
 </AnchorPane>

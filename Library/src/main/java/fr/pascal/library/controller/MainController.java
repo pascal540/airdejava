@@ -3,6 +3,7 @@ package fr.pascal.library.controller;
 // import fr.pascal.library.entity.Book;
 import fr.pascal.library.entity.Rencontre;
 import fr.pascal.library.entity.Titre;
+import fr.pascal.library.entity.Est_programmee;
 import fr.pascal.library.entity.Groupe;
 import fr.pascal.library.utils.DataBaseConnection;
 import javafx.collections.FXCollections;
@@ -22,7 +23,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ResourceBundle;
-
+import java.util.Date;
 import com.mysql.cj.jdbc.CallableStatement;
 
 import java.util.LinkedList;
@@ -47,8 +48,27 @@ public class MainController implements Initializable {
     @FXML
     private ComboBox<String> cbTitre;
     @FXML
-    private TableColumn<Groupe,String> colNomGroupe;
+    private TableColumn<Groupe, String> colNomGroupe;
     
+    // pour la rechezrche et affichage du lieu et du groupe suivant un titre donne
+    @FXML
+    private ComboBox<String> cbLieuEtGroupe;
+
+    
+   @FXML
+    private TableColumn<Est_programmee, Date> colDateDebut;
+    @FXML
+    private TableColumn<Est_programmee, Date> colDateFin;
+
+    
+    @FXML
+    private TableColumn<Est_programmee,String> colLieuPresta;
+
+    @FXML
+    private TableColumn<Est_programmee, String> colLieuRencontre;
+
+    
+
     ObservableList<Titre> nomTitreList = FXCollections.observableArrayList();
     ObservableList<Groupe> nomGroupeList = FXCollections.observableArrayList();
   
