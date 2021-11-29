@@ -254,9 +254,13 @@ public class MainController implements Initializable {
         try {
             ResultSet rs = cs.getResultSet();
             while (rs.next()) {
-               Est_programmee ligneGroupeLieu = new Est_programmee( rs.getString("colLieuPresta"),
-               rs.getTime("colDateDebut"),rs.getTime("colDateFin") );
-                        
+               Est_programmee ligneGroupeLieu = new Est_programmee();
+               ligneGroupeLieu.set_lieuPresentation("_lieuPresentation");
+               System.out.println(rs);
+                // ligneGroupeLieu.set_dateDebut(2021-10-04);
+            //    ligneGroupeLieu.set_dateFin("_dateFin");
+               
+                                       
                nomRencontreLieuGroupeList.add(ligneGroupeLieu);
                  
             }
