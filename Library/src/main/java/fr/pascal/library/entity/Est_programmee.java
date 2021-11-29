@@ -32,10 +32,21 @@ public class Est_programmee {
         this._titrePresente = _titrePresente;
         this._tempsPrevu = _tempsPrevu;
     }
+  
+                                               
 
+    public Est_programmee(  String lieuPresentation,Time dateDebut, Time dateFin) {
+        
+        this._dateDebut = dateDebut;
+        this._dateFin = dateFin;
+        this._lieuPresentation = lieuPresentation;
+         
+    }
 
     public Est_programmee() {
+    
     }
+    
     /*
     ---------------------------------------Accesseurs-------------------------------------
     */

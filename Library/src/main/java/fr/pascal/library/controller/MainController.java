@@ -40,6 +40,8 @@ public class MainController implements Initializable {
     @FXML
     private TableView<Groupe> tvGroupe;
     @FXML
+    private TableView<Est_programmee> tvRencontreLieuEtGroupe;
+    @FXML
     private TableColumn<Groupe, String> colDenominationGroupe;
     @FXML
     private TableColumn<Rencontre, Integer> colId;
@@ -49,29 +51,26 @@ public class MainController implements Initializable {
     private ComboBox<String> cbTitre;
     @FXML
     private TableColumn<Groupe, String> colNomGroupe;
-    
+
     // pour la rechezrche et affichage du lieu et du groupe suivant un titre donne
     @FXML
     private ComboBox<String> cbLieuEtGroupe;
 
-    
-   @FXML
+    @FXML
     private TableColumn<Est_programmee, Date> colDateDebut;
     @FXML
     private TableColumn<Est_programmee, Date> colDateFin;
 
-    
     @FXML
-    private TableColumn<Est_programmee,String> colLieuPresta;
+    private TableColumn<Est_programmee, String> colLieuPresta;
 
     @FXML
     private TableColumn<Est_programmee, String> colLieuRencontre;
 
-    
-
     ObservableList<Titre> nomTitreList = FXCollections.observableArrayList();
     ObservableList<Groupe> nomGroupeList = FXCollections.observableArrayList();
-  
+    ObservableList<Est_programmee> nomRencontreLieuGroupeList = FXCollections.observableArrayList();
+
     @FXML
     void handleButtonAction(ActionEvent event) throws SQLException {
         if (event.getSource() == btnInsert) {
@@ -104,12 +103,12 @@ public class MainController implements Initializable {
 
     }
 
-    /* OUverture tableview rencontre et lancement de la requete stockée*/
-        /**
-         * 
-         * @return rencontreList
-         */
-    
+    /* OUverture tableview rencontre et lancement de la requete stockée */
+    /**
+     * 
+     * @return rencontreList
+     */
+
     private ObservableList<Rencontre> getRencontreList() {
         ObservableList<Rencontre> rencontreList = FXCollections.observableArrayList();
         DataBaseConnection dataBaseConnection = new DataBaseConnection();
@@ -132,12 +131,13 @@ public class MainController implements Initializable {
     }
 
     /**
-     * Remplissage tableview Rencontre 
+     * Remplissage tableview Rencontre
      */
     private void displayTableViewRencontre() {
         ObservableList<Rencontre> listRencontre = getRencontreList();
-        // On fait correspondre chacune des propriétés de l'objet rencontre avec chacune  des colonnes du TableView
-        
+        // On fait correspondre chacune des propriétés de l'objet rencontre avec chacune
+        // des colonnes du TableView
+
         colId.setCellValueFactory(new PropertyValueFactory<Rencontre, Integer>("_id"));
         colNomRencontre.setCellValueFactory(new PropertyValueFactory<Rencontre, String>("_nomRencontre"));
         colLieu.setCellValueFactory(new PropertyValueFactory<Rencontre, String>("_lieuRencontre"));
@@ -146,7 +146,8 @@ public class MainController implements Initializable {
 
     }
 
-    // Méthodes de remplissages de comboBox cdTitre avec tous les titres de repertoire
+    // Méthodes de remplissages de comboBox cdTitre avec tous les titres de
+    // repertoire
     private void RemplissageComboBoxTitre() {
 
         LinkedList<String> combo = new LinkedList<>();
@@ -154,15 +155,15 @@ public class MainController implements Initializable {
         DataBaseConnection dataBaseConnection = new DataBaseConnection();
         Connection connection = dataBaseConnection.getConnection();
 
-        //  String query = "affichage_titres_repertoire";
-        String query ="SELECT TITRE_REPERTOIRE FROM repertoire";
-        
+        // String query = "affichage_titres_repertoire";
+        String query = "SELECT TITRE_REPERTOIRE FROM repertoire";
+
         try {
             Statement statement = connection.createStatement();
             ResultSet rs = statement.executeQuery(query);
             while (rs.next()) {
 
-                  combo.add(rs.getString("titre_repertoire"));
+                combo.add(rs.getString("titre_repertoire"));
             }
             cbTitre.getItems().addAll(combo);
         } catch (Exception e) {
@@ -176,13 +177,13 @@ public class MainController implements Initializable {
     private ObservableList<Groupe> RemplissageTvGroupe(ActionEvent event) throws SQLException {
 
         String res = cbTitre.getValue();
-        
-       nomGroupeList.clear();
+
+        nomGroupeList.clear();
 
         DataBaseConnection dataBaseConnection = new DataBaseConnection();
         Connection connection = dataBaseConnection.getConnection();
-       String query = "call quel_groupe_a_jouer_ce_titre(?)";
-        
+        String query = "call quel_groupe_a_jouer_ce_titre(?)";
+        // indispensable pour procedure stockee et fonctions
         CallableStatement cs = (CallableStatement) connection.prepareCall(query);
 
         cs.setString(1, res);// passage du titre à la procedure stockee
@@ -192,7 +193,7 @@ public class MainController implements Initializable {
             while (rs.next()) {
                 Groupe NomGroupe = new Groupe();
                 NomGroupe.set_DenominationGroupe(rs.getString("nomGroupe"));
-                System.out.println(NomGroupe);
+               
                 nomGroupeList.add(NomGroupe);
             }
         } catch (Exception e) {
@@ -204,10 +205,74 @@ public class MainController implements Initializable {
     }
 
     public void AffichageNomDesGroupes() {
-       colNomGroupe.setCellValueFactory(new PropertyValueFactory<Groupe, String>("_DenominationGroupe"));
+        colNomGroupe.setCellValueFactory(new PropertyValueFactory<Groupe, String>("_DenominationGroupe"));
         tvGroupe.setItems(nomGroupeList);
     }
-    
+
+    // ==========================================================
+    // Méthodes de remplissages de comboBox cdTitre avec tous les titres de
+    // repertoire
+    private void RemplissagecomboBoxLieuEtGroupe() {
+
+        LinkedList<String> combo = new LinkedList<>();
+
+        DataBaseConnection dataBaseConnection = new DataBaseConnection();
+        Connection connection = dataBaseConnection.getConnection();
+
+        // String query = "affichage_titres_repertoire";
+        String query = "SELECT TITRE_REPERTOIRE FROM repertoire";
+
+        try {
+            Statement statement = connection.createStatement();
+            ResultSet rs = statement.executeQuery(query);
+            while (rs.next()) {
+
+                combo.add(rs.getString("titre_repertoire"));
+            }
+            cbLieuEtGroupe.getItems().addAll(combo);
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("ERREUR DANS LA REQUETE Repertoire pour comboLieuEtGroupe");
+        }
+    }
+
+    // Affichage de la tableViewREncontreLieuEtGroupe
+    @FXML
+    private ObservableList<Est_programmee> RemplissagetvRencontreLieuEtGroupe(ActionEvent event) throws SQLException {
+        String res = cbLieuEtGroupe.getValue();
+
+        nomRencontreLieuGroupeList.clear();
+
+        DataBaseConnection dataBaseConnection = new DataBaseConnection();
+        Connection connection = dataBaseConnection.getConnection();
+        String query = "call ou_et_qui_a_interprete_ce_titre(?)";
+        // indispensable pour procedure stockee et fonctions
+        CallableStatement cs = (CallableStatement) connection.prepareCall(query);
+
+        cs.setString(1, res);// passage du titre à la procedure stockee
+        cs.execute(); // execute la procedure
+        try {
+            ResultSet rs = cs.getResultSet();
+            while (rs.next()) {
+               Est_programmee ligneGroupeLieu = new Est_programmee( rs.getString("colLieuPresta"),
+               rs.getTime("colDateDebut"),rs.getTime("colDateFin") );
+                        
+               nomRencontreLieuGroupeList.add(ligneGroupeLieu);
+                 
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Erreur dans la requete ou_et_qui_a_interprete_ce_titre");
+        }
+        connection.close();
+        return nomRencontreLieuGroupeList;
+    }
+
+    public void AffichageChampsRencontreEtGroupe() {
+        colLieuPresta.setCellValueFactory(new PropertyValueFactory<Est_programmee, String>("_lieuPresentation"));
+        tvRencontreLieuEtGroupe.setItems(nomRencontreLieuGroupeList);
+    }
+
     // fin
 
     // private void insertBook() throws SQLException {
@@ -255,6 +320,7 @@ public class MainController implements Initializable {
         // getRencontreList();
         displayTableViewRencontre();
         RemplissageComboBoxTitre();
+        RemplissagecomboBoxLieuEtGroupe();
         AffichageNomDesGroupes();
     }
 }
