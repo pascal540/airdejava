@@ -227,7 +227,7 @@ public class MainController implements Initializable {
             ResultSet rs = statement.executeQuery(query);
             while (rs.next()) {
 
-                combo.add(rs.getString("titre_repertoire"));
+                combo.add(rs.getString("nomTitre"));
             }
             cbTitreAvantGroupe.getItems().addAll(combo);
         } catch (Exception e) {
