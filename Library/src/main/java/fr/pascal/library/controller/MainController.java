@@ -39,14 +39,21 @@ public class MainController implements Initializable {
     private TableView<Rencontre> tvRencontre;
     @FXML
     private TableView<Groupe> tvGroupe;
-    @FXML
-    private TableView<Est_programmee> tvRencontreLieuEtGroupe;
+    // @FXML
+    // private TableView<Est_programmee> tvRencontreLieuEtGroupe;1
+   @FXML
+   private TableView<Rencontre> tvRencontreTitreEtGroupe;
+    
     @FXML
     private TableColumn<Groupe, String> colDenominationGroupe;
     @FXML
     private TableColumn<Rencontre, Integer> colId;
     @FXML
     private TableColumn<Rencontre, String> colNomRencontre, colLieu, colPeriodicite;
+    @FXML
+    private TableColumn<Rencontre, String> ColRencontre;
+
+    
     @FXML
     private ComboBox<String> cbTitre;
       @FXML
@@ -69,7 +76,8 @@ public class MainController implements Initializable {
 
     ObservableList<Titre> nomTitreList = FXCollections.observableArrayList();
     ObservableList<Groupe> nomGroupeList = FXCollections.observableArrayList();
-    ObservableList<Est_programmee> nomRencontreTitreEtGroupeList = FXCollections.observableArrayList();
+    ObservableList<Rencontre> nomRencontreList = FXCollections.observableArrayList();
+
 
     @FXML
     void handleButtonAction(ActionEvent event) throws SQLException {
@@ -263,41 +271,48 @@ public class MainController implements Initializable {
         }
     }
     // Affichage de la tableViewREncontreLieuEtGroupe
-    // @FXML
-    // private ObservableList<Est_programmee> RemplissagetvRencontreLieuEtGroupe(ActionEvent event) throws SQLException {
-    //     String res = cbGroupeAvantRencontre.getValue();
+     @FXML
+     private ObservableList<Rencontre> RemplissageRencontreAPresChoixTitreEtGroupe( ActionEvent event) throws SQLException
+      {
+         String res = cbTitreAvantGroupe.getValue();
+         String res2 = cbGroupeAvantRencontre.getValue();
+        nomRencontreList.clear();
+    //   System.out.println(res);
+    //    System.out.println(res2);
+          DataBaseConnection dataBaseConnection = new DataBaseConnection();
+         Connection connection = dataBaseConnection.getConnection();
+         String query = "call rencontre_avec_titre_groupe(?,?)";
+         // indispensable pour procedure stockee et fonctions
+         CallableStatement cs = (CallableStatement) connection.prepareCall(query);
 
-    //     nomRencontreTitreEtGroupeList.clear();
-
-    //     DataBaseConnection dataBaseConnection = new DataBaseConnection();
-    //     Connection connection = dataBaseConnection.getConnection();
-    //     String query = "call ou_et_qui_a_interprete_ce_titre(?)";
-    //     // indispensable pour procedure stockee et fonctions
-    //     CallableStatement cs = (CallableStatement) connection.prepareCall(query);
-
-    //     cs.setString(1, res);// passage du titre à la procedure stockee
-    //     cs.execute(); // execute la procedure
-    //     try {
-    //         ResultSet rs = cs.getResultSet();
-    //         while (rs.next()) {
-    //            Est_programmee ligneGroupeLieu = new Est_programmee();
-    //            ligneGroupeLieu.set_lieuPresentation("_lieuPresentation");
-    //            System.out.println(rs);
-    //             // ligneGroupeLieu.set_dateDebut(2021-10-04);
-    //         //    ligneGroupeLieu.set_dateFin("_dateFin");
+         cs.setString(1, res);// passage du titre à la procedure stockee
+          cs.setString(2, res2);// passage du groupe à la procedure stockee
+    
+         cs.execute(); // execute la procedure
+         try {
+             ResultSet rs = cs.getResultSet();
+             while (rs.next()) {
+                Rencontre ligneRencontre = new Rencontre();
+                ligneRencontre.set_nomRencontre(rs.getString("NOM_RENCONTRE"));
+                System.out.println(rs);
+                 // ligneGroupeLieu.set_dateDebut(2021-10-04);
+             //    ligneGroupeLieu.set_dateFin("_dateFin");
                
                                        
-    //            nomRencontreTitreEtGroupeList.add(ligneGroupeLieu);
+               nomRencontreList.add(ligneRencontre);
                  
-    //         }
-    //     } catch (Exception e) {
-    //         e.printStackTrace();
-    //         System.out.println("Erreur dans la requete ou_et_qui_a_interprete_ce_titre");
-    //     }
-    //     connection.close();
-    //     return nomRencontreTitreEtGroupeList;
-    // }
-
+             }
+         } catch (Exception e) {
+             e.printStackTrace();
+             System.out.println("Erreur dans la requete ou_et_qui_a_interprete_ce_titre");
+         }
+         connection.close();
+         return nomRencontreList;
+     }
+ public void AffichageNomDesRencontres() {
+        ColRencontre.setCellValueFactory(new PropertyValueFactory<Rencontre, String>("_nomRencontre"));
+       tvRencontreTitreEtGroupe.setItems(nomRencontreList);
+    }
     // public void AffichageChampsRencontreEtGroupe() {
     //     colLieuPresta.setCellValueFactory(new PropertyValueFactory<Est_programmee, String>("_lieuPresentation"));
     //     tvRencontreLieuEtGroupe.setItems(nomRencontreTitreEtGroupeList);
@@ -353,5 +368,6 @@ public class MainController implements Initializable {
         RemplissageComboBoxTitreAvantGroupe();
         RemplissageComboBoxGroupeAvantRencontre();
         AffichageNomDesGroupes();
+        AffichageNomDesRencontres();
     }
 }
