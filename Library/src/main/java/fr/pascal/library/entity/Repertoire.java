@@ -10,7 +10,6 @@ public class Repertoire {
  */
     private int _id;
     private int _idGroupe;
-    private String _titreRepertoire;
     private Date _dateApparitionTitre;
     private String _nomAuteurRepertoire;
     private String _prenomAuteurRepertoire;
@@ -24,10 +23,9 @@ public class Repertoire {
  * @param _nomAuteurRepertoire
  * @param _prenomAuteurRepertoire
  */
-    public Repertoire(int _id, int _idGroupe, String _titreRepertoire, Date _dateApparitionTitre, String _nomAuteurRepertoire, String _prenomAuteurRepertoire) {
+    public Repertoire(int _id, int _idGroupe,  Date _dateApparitionTitre, String _nomAuteurRepertoire, String _prenomAuteurRepertoire) {
         this._id = _id;
         this._idGroupe = _idGroupe;
-        this._titreRepertoire = _titreRepertoire;
         this._dateApparitionTitre = _dateApparitionTitre;
         this._nomAuteurRepertoire = _nomAuteurRepertoire;
         this._prenomAuteurRepertoire = _prenomAuteurRepertoire;
@@ -67,20 +65,7 @@ public class Repertoire {
         this._idGroupe = _idGroupe;
     }
 
-    /**
-     * @return String return the _titreRepertoire
-     */
-    public String get_titreRepertoire() {
-        return _titreRepertoire;
-    }
-
-    /**
-     * @param _titreRepertoire the _titreRepertoire to set
-     */
-    public void set_titreRepertoire(String _titreRepertoire) {
-        this._titreRepertoire = _titreRepertoire;
-    }
-
+    
     /**
      * @return Date return the _dateApparitionTitre
      */

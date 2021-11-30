@@ -49,27 +49,27 @@ public class MainController implements Initializable {
     private TableColumn<Rencontre, String> colNomRencontre, colLieu, colPeriodicite;
     @FXML
     private ComboBox<String> cbTitre;
+      @FXML
+    private ComboBox<String> cbGroupeAvantRencontre;
+     @FXML
+    private ComboBox<String> cbTitreAvantGroupe;
     @FXML
     private TableColumn<Groupe, String> colNomGroupe;
-
-    // pour la rechezrche et affichage du lieu et du groupe suivant un titre donne
-    @FXML
-    private ComboBox<String> cbLieuEtGroupe;
+   
 
     @FXML
     private TableColumn<Est_programmee, Date> colDateDebut;
     @FXML
     private TableColumn<Est_programmee, Date> colDateFin;
-
     @FXML
     private TableColumn<Est_programmee, String> colLieuPresta;
-
     @FXML
     private TableColumn<Est_programmee, String> colLieuRencontre;
 
+
     ObservableList<Titre> nomTitreList = FXCollections.observableArrayList();
     ObservableList<Groupe> nomGroupeList = FXCollections.observableArrayList();
-    ObservableList<Est_programmee> nomRencontreLieuGroupeList = FXCollections.observableArrayList();
+    ObservableList<Est_programmee> nomRencontreTitreEtGroupeList = FXCollections.observableArrayList();
 
     @FXML
     void handleButtonAction(ActionEvent event) throws SQLException {
@@ -155,20 +155,19 @@ public class MainController implements Initializable {
         DataBaseConnection dataBaseConnection = new DataBaseConnection();
         Connection connection = dataBaseConnection.getConnection();
 
-        // String query = "affichage_titres_repertoire";
-        String query = "SELECT TITRE_REPERTOIRE FROM repertoire";
+        String query = "call affichageTitre";
 
         try {
             Statement statement = connection.createStatement();
             ResultSet rs = statement.executeQuery(query);
             while (rs.next()) {
 
-                combo.add(rs.getString("titre_repertoire"));
+                combo.add(rs.getString("nomTitre"));
             }
             cbTitre.getItems().addAll(combo);
         } catch (Exception e) {
             e.printStackTrace();
-            System.out.println("ERREUR DANS LA REQUETE Repertoire");
+            System.out.println("ERREUR DANS LA REQUETE Titre");
         }
     }
 
@@ -177,6 +176,7 @@ public class MainController implements Initializable {
     private ObservableList<Groupe> RemplissageTvGroupe(ActionEvent event) throws SQLException {
 
         String res = cbTitre.getValue();
+        System.out.println(res);
 
         nomGroupeList.clear();
 
@@ -192,7 +192,7 @@ public class MainController implements Initializable {
             ResultSet rs = cs.getResultSet();
             while (rs.next()) {
                 Groupe NomGroupe = new Groupe();
-                NomGroupe.set_DenominationGroupe(rs.getString("nomGroupe"));
+                NomGroupe.set_DenominationGroupe(rs.getString("denomination_groupe"));
                
                 nomGroupeList.add(NomGroupe);
             }
@@ -211,8 +211,8 @@ public class MainController implements Initializable {
 
     // ==========================================================
     // Méthodes de remplissages de comboBox cdTitre avec tous les titres de
-    // repertoire
-    private void RemplissagecomboBoxLieuEtGroupe() {
+    // rencontre dans la table 'titre'
+    private void RemplissageComboBoxTitreAvantGroupe() {
 
         LinkedList<String> combo = new LinkedList<>();
 
@@ -220,7 +220,7 @@ public class MainController implements Initializable {
         Connection connection = dataBaseConnection.getConnection();
 
         // String query = "affichage_titres_repertoire";
-        String query = "SELECT TITRE_REPERTOIRE FROM repertoire";
+        String query = "call affichageTitre";
 
         try {
             Statement statement = connection.createStatement();
@@ -229,53 +229,79 @@ public class MainController implements Initializable {
 
                 combo.add(rs.getString("titre_repertoire"));
             }
-            cbLieuEtGroupe.getItems().addAll(combo);
+            cbTitreAvantGroupe.getItems().addAll(combo);
         } catch (Exception e) {
             e.printStackTrace();
-            System.out.println("ERREUR DANS LA REQUETE Repertoire pour comboLieuEtGroupe");
+            System.out.println("ERREUR DANS LA REQUETE Repertoire pour comboTitreAvantGroupe ");
         }
     }
+    
+     // ==========================================================
+    // Méthodes de remplissages de comboBox cbGroupe tous les noms des groupes 
+    // dans la table groupe
+ private void RemplissageComboBoxGroupeAvantRencontre() {
 
-    // Affichage de la tableViewREncontreLieuEtGroupe
-    @FXML
-    private ObservableList<Est_programmee> RemplissagetvRencontreLieuEtGroupe(ActionEvent event) throws SQLException {
-        String res = cbLieuEtGroupe.getValue();
-
-        nomRencontreLieuGroupeList.clear();
+        LinkedList<String> combo = new LinkedList<>();
 
         DataBaseConnection dataBaseConnection = new DataBaseConnection();
         Connection connection = dataBaseConnection.getConnection();
-        String query = "call ou_et_qui_a_interprete_ce_titre(?)";
-        // indispensable pour procedure stockee et fonctions
-        CallableStatement cs = (CallableStatement) connection.prepareCall(query);
 
-        cs.setString(1, res);// passage du titre à la procedure stockee
-        cs.execute(); // execute la procedure
+        // String query = "affichage_titres_repertoire";
+         String query = "call affichage_groupes";
+
         try {
-            ResultSet rs = cs.getResultSet();
+            Statement statement = connection.createStatement();
+            ResultSet rs = statement.executeQuery(query);
             while (rs.next()) {
-               Est_programmee ligneGroupeLieu = new Est_programmee();
-               ligneGroupeLieu.set_lieuPresentation("_lieuPresentation");
-               System.out.println(rs);
-                // ligneGroupeLieu.set_dateDebut(2021-10-04);
-            //    ligneGroupeLieu.set_dateFin("_dateFin");
-               
-                                       
-               nomRencontreLieuGroupeList.add(ligneGroupeLieu);
-                 
+
+                combo.add(rs.getString("denomination_groupe"));
             }
+            cbGroupeAvantRencontre.getItems().addAll(combo);
         } catch (Exception e) {
             e.printStackTrace();
-            System.out.println("Erreur dans la requete ou_et_qui_a_interprete_ce_titre");
+            System.out.println("ERREUR DANS LA REQUETE groupe comboGroupeAvantRencontre ");
         }
-        connection.close();
-        return nomRencontreLieuGroupeList;
     }
+    // Affichage de la tableViewREncontreLieuEtGroupe
+    // @FXML
+    // private ObservableList<Est_programmee> RemplissagetvRencontreLieuEtGroupe(ActionEvent event) throws SQLException {
+    //     String res = cbGroupeAvantRencontre.getValue();
 
-    public void AffichageChampsRencontreEtGroupe() {
-        colLieuPresta.setCellValueFactory(new PropertyValueFactory<Est_programmee, String>("_lieuPresentation"));
-        tvRencontreLieuEtGroupe.setItems(nomRencontreLieuGroupeList);
-    }
+    //     nomRencontreTitreEtGroupeList.clear();
+
+    //     DataBaseConnection dataBaseConnection = new DataBaseConnection();
+    //     Connection connection = dataBaseConnection.getConnection();
+    //     String query = "call ou_et_qui_a_interprete_ce_titre(?)";
+    //     // indispensable pour procedure stockee et fonctions
+    //     CallableStatement cs = (CallableStatement) connection.prepareCall(query);
+
+    //     cs.setString(1, res);// passage du titre à la procedure stockee
+    //     cs.execute(); // execute la procedure
+    //     try {
+    //         ResultSet rs = cs.getResultSet();
+    //         while (rs.next()) {
+    //            Est_programmee ligneGroupeLieu = new Est_programmee();
+    //            ligneGroupeLieu.set_lieuPresentation("_lieuPresentation");
+    //            System.out.println(rs);
+    //             // ligneGroupeLieu.set_dateDebut(2021-10-04);
+    //         //    ligneGroupeLieu.set_dateFin("_dateFin");
+               
+                                       
+    //            nomRencontreTitreEtGroupeList.add(ligneGroupeLieu);
+                 
+    //         }
+    //     } catch (Exception e) {
+    //         e.printStackTrace();
+    //         System.out.println("Erreur dans la requete ou_et_qui_a_interprete_ce_titre");
+    //     }
+    //     connection.close();
+    //     return nomRencontreTitreEtGroupeList;
+    // }
+
+    // public void AffichageChampsRencontreEtGroupe() {
+    //     colLieuPresta.setCellValueFactory(new PropertyValueFactory<Est_programmee, String>("_lieuPresentation"));
+    //     tvRencontreLieuEtGroupe.setItems(nomRencontreTitreEtGroupeList);
+    // }
 
     // fin
 
@@ -324,7 +350,8 @@ public class MainController implements Initializable {
         // getRencontreList();
         displayTableViewRencontre();
         RemplissageComboBoxTitre();
-        RemplissagecomboBoxLieuEtGroupe();
+        RemplissageComboBoxTitreAvantGroupe();
+        RemplissageComboBoxGroupeAvantRencontre();
         AffichageNomDesGroupes();
     }
 }
