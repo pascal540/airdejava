@@ -6,6 +6,7 @@ import fr.pascal.library.entity.Specialite;
 import fr.pascal.library.entity.Titre;
 import fr.pascal.library.entity.Est_programmee;
 import fr.pascal.library.entity.Groupe;
+import fr.pascal.library.entity.Membre;
 import fr.pascal.library.utils.DataBaseConnection;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -66,12 +67,16 @@ public class MainController implements Initializable {
     @FXML
     private TableColumn<Groupe, String> colNomGroupe;
 
-   // requete 3 et Tvmembre
+    // requete 3 et Tvmembre
+     @FXML
+    private TableColumn<Membre, String> colMembre;
     @FXML
-    private ComboBox<Rencontre> CbRencontrAvSpecialite;
+    private TableView<Membre> tvMembreRencontreSpecialite;
+    @FXML
+    private ComboBox<String> CbRencontrAvSpecialite;
 
     @FXML
-    private ComboBox<Specialite> CbSpecialiteAvantMembre;
+    private ComboBox<String> CbSpecialiteAvantMembre;
     @FXML
     private TableColumn<Membre, String> ColMembre;
 
@@ -89,6 +94,7 @@ public class MainController implements Initializable {
     ObservableList<Titre> nomTitreList = FXCollections.observableArrayList();
     ObservableList<Groupe> nomGroupeList = FXCollections.observableArrayList();
     ObservableList<Rencontre> nomRencontreList = FXCollections.observableArrayList();
+    ObservableList<Membre> nomMembreList = FXCollections.observableArrayList();
 
 
     @FXML
@@ -306,11 +312,8 @@ public class MainController implements Initializable {
              while (rs.next()) {
                 Rencontre ligneRencontre = new Rencontre();
                 ligneRencontre.set_nomRencontre(rs.getString("NOM_RENCONTRE"));
-                System.out.println(rs);
-                 // ligneGroupeLieu.set_dateDebut(2021-10-04);
-             //    ligneGroupeLieu.set_dateFin("_dateFin");
-               
-                                       
+                // System.out.println(rs);
+                                                   
                nomRencontreList.add(ligneRencontre);
                  
              }
@@ -321,17 +324,99 @@ public class MainController implements Initializable {
          connection.close();
          return nomRencontreList;
      }
- public void AffichageNomDesRencontres() {
-        ColRencontre.setCellValueFactory(new PropertyValueFactory<Rencontre, String>("_nomRencontre"));
-       tvRencontreTitreEtGroupe.setItems(nomRencontreList);
-    }
-    // public void AffichageChampsRencontreEtGroupe() {
-    //     colLieuPresta.setCellValueFactory(new PropertyValueFactory<Est_programmee, String>("_lieuPresentation"));
-    //     tvRencontreLieuEtGroupe.setItems(nomRencontreTitreEtGroupeList);
-    // }
 
-    // fin
+     public void AffichageNomDesRencontres() {
+         ColRencontre.setCellValueFactory(new PropertyValueFactory<Rencontre, String>("_nomRencontre"));
+         tvRencontreTitreEtGroupe.setItems(nomRencontreList);
+     }
 
+     private void RemplissageComboBoxRencontre() {
+
+         LinkedList<String> combo = new LinkedList<>();
+
+         DataBaseConnection dataBaseConnection = new DataBaseConnection();
+         Connection connection = dataBaseConnection.getConnection();
+
+         String query = "call afficheRencontre";
+
+         try {
+             Statement statement = connection.createStatement();
+             ResultSet rs = statement.executeQuery(query);
+             while (rs.next()) {
+
+                 combo.add(rs.getString("nom_rencontre"));
+             }
+             CbRencontrAvSpecialite.getItems().addAll(combo);
+         } catch (Exception e) {
+             e.printStackTrace();
+             System.out.println("ERREUR DANS LA REQUETE Rencontre");
+         }
+     }
+
+     private void RemplissageComboBoxSpecialite() {
+
+         LinkedList<String> combo = new LinkedList<>();
+
+         DataBaseConnection dataBaseConnection = new DataBaseConnection();
+         Connection connection = dataBaseConnection.getConnection();
+
+         String query = "call afficheSpecialite";
+
+         try {
+             Statement statement = connection.createStatement();
+             ResultSet rs = statement.executeQuery(query);
+             while (rs.next()) {
+
+                 combo.add(rs.getString("type_specialite"));
+             }
+             CbSpecialiteAvantMembre.getItems().addAll(combo);
+         } catch (Exception e) {
+             e.printStackTrace();
+             System.out.println("ERREUR DANS LA REQUETE Specialite");
+         }
+     }
+
+      @FXML
+     private ObservableList<Membre> RemplissageMembreApresRencontreEtSpecialite( ActionEvent event) throws SQLException
+     {
+         String res = CbRencontrAvSpecialite.getValue();
+         String res2 = CbSpecialiteAvantMembre.getValue();
+          nomMembreList.clear();
+         //   System.out.println(res);
+         //    System.out.println(res2);
+         DataBaseConnection dataBaseConnection = new DataBaseConnection();
+         Connection connection = dataBaseConnection.getConnection();
+         String query = "call quelle_membre_a_specialite(?,?)";
+         // indispensable pour procedure stockee et fonctions
+         CallableStatement cs = (CallableStatement) connection.prepareCall(query);
+
+         cs.setString(1, res);// passage du titre à la procedure stockee
+         cs.setString(2, res2);// passage du groupe à la procedure stockee
+
+         cs.execute(); // execute la procedure
+         try {
+             ResultSet rs = cs.getResultSet();
+             while (rs.next()) {
+                 Membre ligneMembre = new Membre();
+                 ligneMembre.set_nomMembre(rs.getString("nom_membre"));
+                  System.out.println(rs);
+
+                nomMembreList.add(ligneMembre);
+
+             }
+         } catch (Exception e) {
+             e.printStackTrace();
+             System.out.println("Erreur dans la requete quelle_membre_a_specialite");
+         }
+         connection.close();
+         return nomMembreList;
+     }
+      public void AffichageNomDesMembres() {
+         ColMembre.setCellValueFactory(new PropertyValueFactory<Membre, String>("_nomMembre"));
+         tvMembreRencontreSpecialite.setItems(nomMembreList);
+     }
+
+    
     // private void insertBook() throws SQLException {
     // String query = "INSERT INTO book VALUES ('" + tfId.getText() + "', '" +
     // tfTitle.getText() + "', '"
@@ -381,5 +466,9 @@ public class MainController implements Initializable {
         RemplissageComboBoxGroupeAvantRencontre();
         AffichageNomDesGroupes();
         AffichageNomDesRencontres();
+        RemplissageComboBoxRencontre();
+        RemplissageComboBoxSpecialite();
+        AffichageNomDesMembres();
+
     }
 }

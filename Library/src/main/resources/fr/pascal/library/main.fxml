@@ -122,8 +122,8 @@
       <ComboBox fx:id="cbGroupeAvantRencontre" layoutX="513.0" layoutY="296.0" onAction="#RemplissageRencontreAPresChoixTitreEtGroupe" prefWidth="150.0" promptText="Quel groupe ?" />
       <Text layoutX="29.0" layoutY="407.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Quelle spécialité ont les membres ayant joué à telle renconre ?" wrappingWidth="285.26953125" />
       <ComboBox fx:id="CbRencontrAvSpecialite" layoutX="340.0" layoutY="398.0" prefWidth="150.0" promptText="Nom rencontre ?" />
-      <ComboBox fx:id="CbSpecialiteAvantMembre" layoutX="516.0" layoutY="398.0" onAction="#RemplissageRencontreAPresChoixTitreEtGroupe" prefWidth="150.0" promptText="La spécialité ?" />
-      <TableView fx:id="tvRencontreTitreEtGroupe1" layoutX="681.0" layoutY="387.0" onMouseClicked="#handleMouseAction" onSort="#RemplissageRencontreAPresChoixTitreEtGroupe" prefHeight="95.0" prefWidth="329.0">
+      <ComboBox fx:id="CbSpecialiteAvantMembre" layoutX="516.0" layoutY="398.0" onAction="#RemplissageMembreApresRencontreEtSpecialite" prefWidth="150.0" promptText="La spécialité ?" />
+      <TableView fx:id="tvMembreRencontreSpecialite" layoutX="681.0" layoutY="387.0" onMouseClicked="#handleMouseAction" onSort="#RemplissageRencontreAPresChoixTitreEtGroupe" prefHeight="95.0" prefWidth="329.0">
          <columns>
             <TableColumn fx:id="ColMembre" prefWidth="293.0" text="Nom membres" />
          </columns>
