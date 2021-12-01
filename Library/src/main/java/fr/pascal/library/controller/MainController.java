@@ -2,6 +2,7 @@ package fr.pascal.library.controller;
 
 // import fr.pascal.library.entity.Book;
 import fr.pascal.library.entity.Rencontre;
+import fr.pascal.library.entity.Specialite;
 import fr.pascal.library.entity.Titre;
 import fr.pascal.library.entity.Est_programmee;
 import fr.pascal.library.entity.Groupe;
@@ -17,6 +18,8 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.cell.PropertyValueFactory;
+
+import java.lang.reflect.Member;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -62,7 +65,16 @@ public class MainController implements Initializable {
     private ComboBox<String> cbTitreAvantGroupe;
     @FXML
     private TableColumn<Groupe, String> colNomGroupe;
-   
+
+   // requete 3 et Tvmembre
+    @FXML
+    private ComboBox<Rencontre> CbRencontrAvSpecialite;
+
+    @FXML
+    private ComboBox<Specialite> CbSpecialiteAvantMembre;
+    @FXML
+    private TableColumn<Membre, String> ColMembre;
+
 
     @FXML
     private TableColumn<Est_programmee, Date> colDateDebut;
