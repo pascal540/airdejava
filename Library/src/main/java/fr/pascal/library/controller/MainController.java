@@ -20,6 +20,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Spinner;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 // import java.lang.reflect.Member;
@@ -106,15 +107,16 @@ public class MainController implements Initializable {
     private TableColumn<Titre, Integer> ColTitre;
     @FXML
     private TableColumn<Titre, Integer> ColDuree;
-
-    
+    @FXML
+    private Spinner<Integer> spDureeTitre;
+ 
 
     ObservableList<Titre> nomTitreList = FXCollections.observableArrayList();
     ObservableList<Groupe> nomGroupeList = FXCollections.observableArrayList();
     ObservableList<Rencontre> nomRencontreList = FXCollections.observableArrayList();
     ObservableList<Membre> nomMembreList = FXCollections.observableArrayList();
-
-
+    ObservableList<Titre> nomTitreEtDuree = FXCollections.observableArrayList();
+     
     @FXML
     void handleButtonAction(ActionEvent event) throws SQLException {
         if (event.getSource() == btnInsert) {
@@ -458,7 +460,8 @@ public class MainController implements Initializable {
             System.out.println("ERREUR DANS LA REQUETE Pays");
         }
     }
-private void RemplissageComboBoxRegion() {
+
+    private void RemplissageComboBoxRegion() {
 
         LinkedList<String> combo = new LinkedList<>();
 
@@ -480,6 +483,47 @@ private void RemplissageComboBoxRegion() {
             System.out.println("ERREUR DANS LA REQUETE Region");
         }
     }
+    
+    @FXML
+     private ObservableList<Titre> RemplissageTitreApresChoixPaysRegion( ActionEvent event) throws SQLException
+     {
+         Integer res = spDureeTitre.getValue();
+         String res2 = cbPays.getValue();
+         String res3 = cbRegion.getValue();
+        nomRencontreList.clear();
+     
+          DataBaseConnection dataBaseConnection = new DataBaseConnection();
+         Connection connection = dataBaseConnection.getConnection();
+         String query = "call quelTitrePaysRegion(?,?,?)";
+         // indispensable pour procedure stockee et fonctions
+         CallableStatement cs = (CallableStatement) connection.prepareCall(query);
+            cs.setInt(1, res); //duree
+         cs.setString(2, res2);// pays
+          cs.setString(3, res3);// region
+    
+         cs.execute(); // execute la procedure
+         try {
+             ResultSet rs = cs.getResultSet();
+             while (rs.next()) {
+                Titre ligneTitre = new Titre();
+                ligneTitre.set_nomTitre(rs.getString("nomTitre"));
+                // System.out.println(rs);
+                                                   
+               nomTitreEtDuree.add(ligneTitre);
+                 
+             }
+         } catch (Exception e) {
+             e.printStackTrace();
+             System.out.println("Erreur dans la requete ou_et_qui_a_interprete_ce_titre");
+         }
+         connection.close();
+         return nomTitreEtDuree;
+     }
+
+     public void AffichageTitreEtDuree() {
+         ColTitre.setCellValueFactory(new PropertyValueFactory<Titre, String>("_titre"));
+         TvTitreEtDuree.setItems( nomTitreEtDuree);
+     }
     // private void insertBook() throws SQLException {
     // String query = "INSERT INTO book VALUES ('" + tfId.getText() + "', '" +
     // tfTitle.getText() + "', '"
@@ -534,6 +578,7 @@ private void RemplissageComboBoxRegion() {
         AffichageNomDesMembres();
         RemplissageComboBoxPays();
         RemplissageComboBoxRegion();
+        AffichageTitreEtDuree();
 
     }
 }

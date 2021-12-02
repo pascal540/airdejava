@@ -4,6 +4,7 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Spinner?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
@@ -128,7 +129,7 @@
             <TableColumn fx:id="ColMembre" prefWidth="293.0" text="Nom membres" />
          </columns>
       </TableView>
-      <Text layoutX="29.0" layoutY="510.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Durée du titre à rechercher" wrappingWidth="285.26953125" />
+      <Text layoutX="29.0" layoutY="502.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Durée du titre à rechercher" wrappingWidth="285.26953125" />
       <ComboBox fx:id="cbPays" layoutX="348.0" layoutY="485.0" prefWidth="150.0" promptText="Pays ?" />
       <ComboBox fx:id="cbRegion" layoutX="516.0" layoutY="485.0" onAction="#RemplissageMembreApresRencontreEtSpecialite" prefWidth="150.0" promptText="Ou région ?" />
       <TableView fx:id="TvTitreEtDuree" layoutX="673.0" layoutY="467.0" onMouseClicked="#handleMouseAction" prefHeight="95.0" prefWidth="329.0">
@@ -137,5 +138,8 @@
             <TableColumn fx:id="ColDuree" prefWidth="110.0" text="Duée du titre" />
          </columns>
       </TableView>
+      <Spinner fx:id="spDureeTitre" initialValue="1" layoutX="185.0" layoutY="485.0" max="120" prefHeight="25.0" prefWidth="66.0" />
+      <Text layoutX="274.0" layoutY="502.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Minutes" />
+      <Button fx:id="btnRechercheTitreEtDuree" layoutX="390.0" layoutY="527.0" mnemonicParsing="false" onAction="#RemplissageTitreApresChoixPaysRegion" text="Recherche du titre après vos choix ci-dessus " />
     </children>
 </AnchorPane>
