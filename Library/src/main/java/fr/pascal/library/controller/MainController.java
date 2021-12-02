@@ -7,6 +7,8 @@ import fr.pascal.library.entity.Titre;
 import fr.pascal.library.entity.Est_programmee;
 import fr.pascal.library.entity.Groupe;
 import fr.pascal.library.entity.Membre;
+import fr.pascal.library.entity.Pays;
+import fr.pascal.library.entity.Region;
 import fr.pascal.library.utils.DataBaseConnection;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -20,7 +22,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.cell.PropertyValueFactory;
 
-import java.lang.reflect.Member;
+// import java.lang.reflect.Member;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -90,6 +92,22 @@ public class MainController implements Initializable {
     @FXML
     private TableColumn<Est_programmee, String> colLieuRencontre;
 
+    // Partie recherche titre dans pays ou region d'une certaine durée
+    @FXML
+    private ComboBox<String> cbPays;
+
+    @FXML
+    private ComboBox<String> cbRegion;
+
+    @FXML
+    private TableView<Titre> TvTitreEtDuree;
+
+    @FXML
+    private TableColumn<Titre, Integer> ColTitre;
+    @FXML
+    private TableColumn<Titre, Integer> ColDuree;
+
+    
 
     ObservableList<Titre> nomTitreList = FXCollections.observableArrayList();
     ObservableList<Groupe> nomGroupeList = FXCollections.observableArrayList();
@@ -122,10 +140,11 @@ public class MainController implements Initializable {
     @FXML
     void handleMouseAction() {
         // Permet de récupérer les propriétés de l'item cliqué dans le TableView
-        Rencontre rencontre = tvRencontre.getSelectionModel().getSelectedItem();
+        // et de lafficher ans le textefield correspondant
+        // Rencontre rencontre = tvRencontre.getSelectionModel().getSelectedItem();
         // On lie au clic l'objet book avec les TextField
-        tfId.setText(String.valueOf(rencontre.get_id()));
-        tfTitle.setText(rencontre.get_nomRencontre());
+        // tfId.setText(String.valueOf(rencontre.get_id()));
+        // tfTitle.setText(rencontre.get_nomRencontre());
 
     }
 
@@ -265,7 +284,7 @@ public class MainController implements Initializable {
      // ==========================================================
     // Méthodes de remplissages de comboBox cbGroupe tous les noms des groupes 
     // dans la table groupe
- private void RemplissageComboBoxGroupeAvantRencontre() {
+    private void RemplissageComboBoxGroupeAvantRencontre() {
 
         LinkedList<String> combo = new LinkedList<>();
 
@@ -416,7 +435,51 @@ public class MainController implements Initializable {
          tvMembreRencontreSpecialite.setItems(nomMembreList);
      }
 
-    
+     // Partie durée d'un titre entré et pays ou region et affichage titre et durée
+    private void RemplissageComboBoxPays() {
+
+        LinkedList<String> combo = new LinkedList<>();
+
+        DataBaseConnection dataBaseConnection = new DataBaseConnection();
+        Connection connection = dataBaseConnection.getConnection();
+
+        String query = "call affichagePays";
+
+        try {
+            Statement statement = connection.createStatement();
+            ResultSet rs = statement.executeQuery(query);
+            while (rs.next()) {
+
+                combo.add(rs.getString("nom_Pays"));
+            }
+            cbPays.getItems().addAll(combo);
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("ERREUR DANS LA REQUETE Pays");
+        }
+    }
+private void RemplissageComboBoxRegion() {
+
+        LinkedList<String> combo = new LinkedList<>();
+
+        DataBaseConnection dataBaseConnection = new DataBaseConnection();
+        Connection connection = dataBaseConnection.getConnection();
+
+        String query = "call affichageRegion";
+
+        try {
+            Statement statement = connection.createStatement();
+            ResultSet rs = statement.executeQuery(query);
+            while (rs.next()) {
+
+                combo.add(rs.getString("nom_Region"));
+            }
+            cbRegion.getItems().addAll(combo);
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("ERREUR DANS LA REQUETE Region");
+        }
+    }
     // private void insertBook() throws SQLException {
     // String query = "INSERT INTO book VALUES ('" + tfId.getText() + "', '" +
     // tfTitle.getText() + "', '"
@@ -469,6 +532,8 @@ public class MainController implements Initializable {
         RemplissageComboBoxRencontre();
         RemplissageComboBoxSpecialite();
         AffichageNomDesMembres();
+        RemplissageComboBoxPays();
+        RemplissageComboBoxRegion();
 
     }
 }
