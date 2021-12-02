@@ -490,7 +490,7 @@ public class MainController implements Initializable {
          Integer res = spDureeTitre.getValue();
          String res2 = cbPays.getValue();
          String res3 = cbRegion.getValue();
-        nomRencontreList.clear();
+        nomTitreEtDuree.clear();
      
           DataBaseConnection dataBaseConnection = new DataBaseConnection();
          Connection connection = dataBaseConnection.getConnection();
