@@ -20,7 +20,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.Spinner;
+import javafx.scene.control.Spinner;//initialValue="1" max="120"
 import javafx.scene.control.cell.PropertyValueFactory;
 
 // import java.lang.reflect.Member;
@@ -104,9 +104,10 @@ public class MainController implements Initializable {
     private TableView<Titre> TvTitreEtDuree;
 
     @FXML
-    private TableColumn<Titre, Integer> ColTitre;
-    @FXML
-    private TableColumn<Titre, Integer> ColDuree;
+    private TableColumn<Titre, String> colTitre;
+     @FXML
+    private TableColumn<Titre, Integer> colDuree;
+     
     @FXML
     private Spinner<Integer> spDureeTitre;
  
@@ -500,29 +501,34 @@ public class MainController implements Initializable {
             cs.setInt(1, res); //duree
          cs.setString(2, res2);// pays
           cs.setString(3, res3);// region
-    
+          System.out.println(res);
+          System.out.println(res2);
+          System.out.println(res3);
          cs.execute(); // execute la procedure
          try {
              ResultSet rs = cs.getResultSet();
              while (rs.next()) {
+                System.out.println(rs);
                 Titre ligneTitre = new Titre();
                 ligneTitre.set_nomTitre(rs.getString("nomTitre"));
-                // System.out.println(rs);
+                ligneTitre.set_duree(rs.getInt("duree"));
+                //  System.out.println( ligneTitre.get_nomTitre());
                                                    
                nomTitreEtDuree.add(ligneTitre);
                  
              }
          } catch (Exception e) {
              e.printStackTrace();
-             System.out.println("Erreur dans la requete ou_et_qui_a_interprete_ce_titre");
+             System.out.println("Erreur dans la requete quelTitrePaysRegion");
          }
          connection.close();
          return nomTitreEtDuree;
      }
 
      public void AffichageTitreEtDuree() {
-         ColTitre.setCellValueFactory(new PropertyValueFactory<Titre, String>("_titre"));
-         TvTitreEtDuree.setItems( nomTitreEtDuree);
+         colTitre.setCellValueFactory(new PropertyValueFactory<Titre, String>("_nomTitre"));
+         colDuree.setCellValueFactory(new PropertyValueFactory<Titre, Integer>("_duree"));
+          TvTitreEtDuree.setItems( nomTitreEtDuree);
      }
     // private void insertBook() throws SQLException {
     // String query = "INSERT INTO book VALUES ('" + tfId.getText() + "', '" +
@@ -578,7 +584,7 @@ public class MainController implements Initializable {
         AffichageNomDesMembres();
         RemplissageComboBoxPays();
         RemplissageComboBoxRegion();
-        AffichageTitreEtDuree();
+         AffichageTitreEtDuree();
 
     }
 }

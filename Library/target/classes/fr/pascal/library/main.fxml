@@ -131,11 +131,11 @@
       </TableView>
       <Text layoutX="29.0" layoutY="502.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Durée du titre à rechercher" wrappingWidth="285.26953125" />
       <ComboBox fx:id="cbPays" layoutX="348.0" layoutY="485.0" prefWidth="150.0" promptText="Pays ?" />
-      <ComboBox fx:id="cbRegion" layoutX="516.0" layoutY="485.0" onAction="#RemplissageMembreApresRencontreEtSpecialite" prefWidth="150.0" promptText="Ou région ?" />
+      <ComboBox fx:id="cbRegion" layoutX="516.0" layoutY="485.0" prefWidth="150.0" promptText="Ou région ?" />
       <TableView fx:id="TvTitreEtDuree" layoutX="673.0" layoutY="467.0" onMouseClicked="#handleMouseAction" prefHeight="95.0" prefWidth="329.0">
          <columns>
-            <TableColumn fx:id="ColTitre" prefWidth="220.0" text="Titre" />
-            <TableColumn fx:id="ColDuree" prefWidth="110.0" text="Duée du titre" />
+            <TableColumn fx:id="colTitre" prefWidth="220.0" text="Titre" />
+            <TableColumn fx:id="colDuree" prefWidth="110.0" text="Duée du titre" />
          </columns>
       </TableView>
       <Spinner fx:id="spDureeTitre" initialValue="1" layoutX="185.0" layoutY="485.0" max="120" prefHeight="25.0" prefWidth="66.0" />
