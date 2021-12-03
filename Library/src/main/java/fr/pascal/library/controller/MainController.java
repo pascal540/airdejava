@@ -81,7 +81,7 @@ public class MainController implements Initializable {
     @FXML
     private ComboBox<String> CbSpecialiteAvantMembre;
     @FXML
-    private TableColumn<Membre, String> ColMembre;
+    private TableColumn<Membre, String> colNomMembre,colPrenomMembre;
 
 
     @FXML
@@ -421,6 +421,7 @@ public class MainController implements Initializable {
              while (rs.next()) {
                  Membre ligneMembre = new Membre();
                  ligneMembre.set_nomMembre(rs.getString("nom_membre"));
+                 ligneMembre.set_prenomMembre(rs.getString("prenom_membre"));
                   System.out.println(rs);
 
                 nomMembreList.add(ligneMembre);
@@ -434,7 +435,8 @@ public class MainController implements Initializable {
          return nomMembreList;
      }
       public void AffichageNomDesMembres() {
-         ColMembre.setCellValueFactory(new PropertyValueFactory<Membre, String>("_nomMembre"));
+          colNomMembre.setCellValueFactory(new PropertyValueFactory<Membre, String>("_nomMembre"));
+          colPrenomMembre.setCellValueFactory(new PropertyValueFactory<Membre, String>("_prenomMembre"));
          tvMembreRencontreSpecialite.setItems(nomMembreList);
      }
 

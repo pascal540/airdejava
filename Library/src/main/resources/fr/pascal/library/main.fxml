@@ -126,7 +126,8 @@
       <ComboBox fx:id="CbSpecialiteAvantMembre" layoutX="516.0" layoutY="387.0" onAction="#RemplissageMembreApresRencontreEtSpecialite" prefWidth="150.0" promptText="La spécialité ?" />
       <TableView fx:id="tvMembreRencontreSpecialite" layoutX="673.0" layoutY="352.0" onMouseClicked="#handleMouseAction" onSort="#RemplissageMembreApresRencontreEtSpecialite" prefHeight="95.0" prefWidth="329.0">
          <columns>
-            <TableColumn fx:id="ColMembre" prefWidth="293.0" text="Nom membres" />
+            <TableColumn fx:id="colNomMembre" prefWidth="178.0" text="Nom membre" />
+            <TableColumn fx:id="colPrenomMembre" prefWidth="100.0" text="Prénom membre" />
          </columns>
       </TableView>
       <Text layoutX="29.0" layoutY="502.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Durée du titre à rechercher" wrappingWidth="285.26953125" />
