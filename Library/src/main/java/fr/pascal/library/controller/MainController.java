@@ -6,6 +6,7 @@ import fr.pascal.library.entity.Specialite;
 import fr.pascal.library.entity.Titre;
 import fr.pascal.library.entity.Est_programmee;
 import fr.pascal.library.entity.Groupe;
+import fr.pascal.library.entity.Instrument;
 import fr.pascal.library.entity.Membre;
 import fr.pascal.library.entity.Pays;
 import fr.pascal.library.entity.Region;
@@ -56,9 +57,9 @@ public class MainController implements Initializable {
     @FXML
     private TableColumn<Rencontre, Integer> colId;
     @FXML
-    private TableColumn<Rencontre, String> colNomRencontre, colLieu, colPeriodicite;
+    private TableColumn<Rencontre, String> colNomRencontre, colLieu, colPeriodicite; 
     @FXML
-    private TableColumn<Rencontre, String> ColRencontre;
+    private TableColumn<Rencontre, String> ColRencontre; // pour requete titre et groupe
 
     
     @FXML
@@ -110,14 +111,27 @@ public class MainController implements Initializable {
      
     @FXML
     private Spinner<Integer> spDureeTitre;
- 
+
+    // partie recherche rencontre suivant X groupes
+    @FXML
+    private Button btChercheRencontreXGroupeJoue;
+    @FXML
+    private Spinner<Integer> spNbGroupe;
+   
+    // partie recherche rencontre avec tel instrument  utilisé ?
+    @FXML
+    private ComboBox<String> cbInstrument;
+   
+    @FXML
+    private TableView<Instrument> tvRencontreInstrument;
 
     ObservableList<Titre> nomTitreList = FXCollections.observableArrayList();
     ObservableList<Groupe> nomGroupeList = FXCollections.observableArrayList();
     ObservableList<Rencontre> nomRencontreList = FXCollections.observableArrayList();
     ObservableList<Membre> nomMembreList = FXCollections.observableArrayList();
     ObservableList<Titre> nomTitreEtDuree = FXCollections.observableArrayList();
-     
+    ObservableList<Rencontre> nomRencontreSuivantNbGroupesList  = FXCollections.observableArrayList();
+    
     @FXML
     void handleButtonAction(ActionEvent event) throws SQLException {
         if (event.getSource() == btnInsert) {
@@ -179,20 +193,20 @@ public class MainController implements Initializable {
     }
 
     /**
-     * Remplissage tableview Rencontre
+     * Remplissage tableview Rencontre  
      */
-    private void displayTableViewRencontre() {
-        ObservableList<Rencontre> listRencontre = getRencontreList();
-        // On fait correspondre chacune des propriétés de l'objet rencontre avec chacune
-        // des colonnes du TableView
+//     private void displayTableViewRencontre() {
+//       ObservableList<Rencontre> listRencontre = getRencontreList();
+//         // On fait correspondre chacune des propriétés de l'objet rencontre avec chacune
+//         // des colonnes du TableView
 
-        colId.setCellValueFactory(new PropertyValueFactory<Rencontre, Integer>("_id"));
-        colNomRencontre.setCellValueFactory(new PropertyValueFactory<Rencontre, String>("_nomRencontre"));
-        colLieu.setCellValueFactory(new PropertyValueFactory<Rencontre, String>("_lieuRencontre"));
-        colPeriodicite.setCellValueFactory(new PropertyValueFactory<Rencontre, String>("_periodiciteRencontre"));
-        tvRencontre.setItems(listRencontre);
+//          colId.setCellValueFactory(new PropertyValueFactory<Rencontre, Integer>("_id"));
+//          colNomRencontre.setCellValueFactory(new PropertyValueFactory<Rencontre, String>("_nomRencontre"));
+//          colLieu.setCellValueFactory(new PropertyValueFactory<Rencontre, String>("_lieuRencontre"));
+//         colPeriodicite.setCellValueFactory(new PropertyValueFactory<Rencontre, String>("_periodiciteRencontre"));
+//         tvRencontre.setItems(listRencontre);
 
-    }
+//  }
 
     // Méthodes de remplissages de comboBox cdTitre avec tous les titres de
     // repertoire
@@ -503,9 +517,9 @@ public class MainController implements Initializable {
             cs.setInt(1, res); //duree
          cs.setString(2, res2);// pays
           cs.setString(3, res3);// region
-          System.out.println(res);
-          System.out.println(res2);
-          System.out.println(res3);
+        //   System.out.println(res);
+        //   System.out.println(res2);
+        //   System.out.println(res3);
          cs.execute(); // execute la procedure
          try {
              ResultSet rs = cs.getResultSet();
@@ -530,7 +544,43 @@ public class MainController implements Initializable {
      public void AffichageTitreEtDuree() {
          colTitre.setCellValueFactory(new PropertyValueFactory<Titre, String>("_nomTitre"));
          colDuree.setCellValueFactory(new PropertyValueFactory<Titre, Integer>("_duree"));
-          TvTitreEtDuree.setItems( nomTitreEtDuree);
+         TvTitreEtDuree.setItems(nomTitreEtDuree);
+     }
+
+     // Affichage des rencontres ou 'N' groupes ont joues 
+    @FXML
+     private ObservableList<Rencontre> RemplissageRencontreSuivantLesGroupes( ActionEvent event) throws SQLException
+     {
+         Integer res = spNbGroupe.getValue();
+         
+        nomRencontreSuivantNbGroupesList.clear();
+     
+          DataBaseConnection dataBaseConnection = new DataBaseConnection();
+         Connection connection = dataBaseConnection.getConnection();
+         String query = "call rencontre_avec_n_groupe(?)";
+         // indispensable pour procedure stockee et fonctions
+         CallableStatement cs = (CallableStatement) connection.prepareCall(query);
+         cs.setInt(1, res); //nbGroupes           
+         cs.execute();  
+         try {
+             ResultSet rs = cs.getResultSet();
+             while (rs.next()) {
+                System.out.println(rs);
+                Rencontre ligneRencontre = new Rencontre();
+                ligneRencontre.set_nomRencontre(rs.getString("nom_rencontre"));                                                               
+                nomRencontreSuivantNbGroupesList.add(ligneRencontre);
+                 
+             }
+         } catch (Exception e) {
+             e.printStackTrace();
+             System.out.println("Erreur dans la requete rencontre_avec_n_groupe");
+         }
+         connection.close();
+         return  nomRencontreSuivantNbGroupesList;
+     }
+ public void AffichageRencontreNGroupes() {
+        colNomRencontre.setCellValueFactory(new PropertyValueFactory<Rencontre, String>("_nomRencontre"));
+         tvRencontre.setItems(nomRencontreSuivantNbGroupesList);
      }
     // private void insertBook() throws SQLException {
     // String query = "INSERT INTO book VALUES ('" + tfId.getText() + "', '" +
@@ -575,7 +625,7 @@ public class MainController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         // getRencontreList();
-        displayTableViewRencontre();
+        //displayTableViewRencontre();
         RemplissageComboBoxTitre();
         RemplissageComboBoxTitreAvantGroupe();
         RemplissageComboBoxGroupeAvantRencontre();
@@ -586,7 +636,8 @@ public class MainController implements Initializable {
         AffichageNomDesMembres();
         RemplissageComboBoxPays();
         RemplissageComboBoxRegion();
-         AffichageTitreEtDuree();
+        AffichageTitreEtDuree();
+        AffichageRencontreNGroupes();
 
     }
 }

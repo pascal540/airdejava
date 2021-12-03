@@ -17,44 +17,17 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="850.0" prefWidth="1024.0" style="-fx-background-color: #9CD2D2#9CD2D2;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.pascal.library.controller.MainController">
     <children>
-        <VBox alignment="TOP_RIGHT" layoutX="31.0" layoutY="570.0" prefHeight="200.0" prefWidth="46.0" spacing="21.0">
+        <VBox layoutX="424.0" layoutY="723.0" prefHeight="156.0" prefWidth="224.0" spacing="13.0">
             <children>
-                <Label text="ID" textFill="WHITE">
-                    <font>
-                        <Font size="14.0" />
-                    </font>
-                </Label>
-                <Label text="Ren" textFill="WHITE">
-                    <font>
-                        <Font size="14.0" />
-                    </font>
-                </Label>
-                <Label text="Lieu" textFill="WHITE">
-                    <font>
-                        <Font size="14.0" />
-                    </font>
-                </Label>
-                <Label text="Période" textFill="WHITE">
-                    <font>
-                        <Font size="14.0" />
-                    </font>
-                </Label>
-            </children>
-        </VBox>
-        <VBox layoutX="80.0" layoutY="606.0" prefHeight="156.0" prefWidth="224.0" spacing="13.0">
-            <children>
-                <TextField fx:id="tfId" />
                 <TextField fx:id="tfTitle" />
                 <TextField fx:id="tfAuthor" />
                 <TextField fx:id="tfYear" />
+                <TextField fx:id="tfId" />
             </children>
         </VBox>
-        <TableView fx:id="tvRencontre" layoutX="512.0" layoutY="709.0" onMouseClicked="#handleMouseAction" prefHeight="95.0" prefWidth="498.0">
+        <TableView fx:id="tvRencontre" layoutX="682.0" layoutY="550.0" onMouseClicked="#handleMouseAction" prefHeight="95.0" prefWidth="329.0">
             <columns>
-                <TableColumn fx:id="colId" prefWidth="72.0" text="ID" />
-                <TableColumn fx:id="colNomRencontre" prefWidth="78.0" text="Rencontre" />
-                <TableColumn fx:id="colPeriodicite" minWidth="0.0" prefWidth="210.0" text="Périodicité" />
-                <TableColumn fx:id="colLieu" prefWidth="87.0" text="Lieu" />
+                <TableColumn fx:id="colNomRencontre" prefWidth="327.0" text="Rencontre" />
             </columns>
         </TableView>
         <Button fx:id="btnInsert" layoutX="10.0" layoutY="801.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="26.0" prefWidth="88.0" style="-fx-background-color: #4AC9D8#4AC9D8;" text="Insert" textFill="WHITE">
@@ -93,11 +66,7 @@
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor></Button>
-      <Text layoutX="612.0" layoutY="692.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Visualisation des rencontres en base">
-         <font>
-            <Font size="20.0" />
-         </font></Text>
-      <TableView fx:id="tvGroupe" layoutX="505.0" layoutY="129.0" onMouseClicked="#handleMouseAction" prefHeight="95.0" prefWidth="498.0">
+      <TableView fx:id="tvGroupe" layoutX="682.0" layoutY="94.0" onMouseClicked="#handleMouseAction" prefHeight="95.0" prefWidth="329.0">
          <columns>
             <TableColumn fx:id="colNomGroupe" prefWidth="371.0" text="Nom groupe" />
          </columns>
@@ -107,40 +76,70 @@
             <Font name="Elephant" size="30.0" />
          </font>
       </Text>
-      <ComboBox fx:id="cbTitre" layoutX="348.0" layoutY="164.0" onAction="#RemplissageTvGroupe" prefWidth="150.0" promptText="Vos titres à choisir" />
-      <Text layoutX="29.0" layoutY="181.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Choisissez votre titre pour lister le groupe qui l'a joué " />
-      <Text layoutX="690.0" layoutY="123.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Liste des groupes">
-         <font>
-            <Font name="Book Antiqua" size="19.0" />
-         </font></Text>
-      <ComboBox fx:id="cbTitreAvantGroupe" layoutX="348.0" layoutY="265.0" prefWidth="150.0" promptText="Quel titre ?" />
-      <Text layoutX="29.0" layoutY="273.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Choisissez votre titre et le groupe  pour connaitre le nom de la rencontre ou cela a été joué" wrappingWidth="285.26953125" />
-      <TableView fx:id="tvRencontreTitreEtGroupe" layoutX="673.0" layoutY="230.0" onMouseClicked="#handleMouseAction" onSort="#RemplissageRencontreAPresChoixTitreEtGroupe" prefHeight="95.0" prefWidth="329.0">
+      <ComboBox fx:id="cbTitre" layoutX="359.0" layoutY="129.0" onAction="#RemplissageTvGroupe" prefWidth="150.0" promptText="Vos titres à choisir" />
+      <Text layoutX="40.0" layoutY="146.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Choisissez votre titre pour lister le groupe qui l'a joué " />
+      <ComboBox fx:id="cbTitreAvantGroupe" layoutX="359.0" layoutY="234.0" prefWidth="150.0" promptText="Quel titre ?" />
+      <Text layoutX="30.0" layoutY="243.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Choisissez votre titre et le groupe  pour connaitre le nom de la rencontre ou cela a été joué" wrappingWidth="285.26953125" />
+      <TableView fx:id="tvRencontreTitreEtGroupe" layoutX="682.0" layoutY="199.0" onMouseClicked="#handleMouseAction" onSort="#RemplissageRencontreAPresChoixTitreEtGroupe" prefHeight="95.0" prefWidth="329.0">
          <columns>
             <TableColumn fx:id="ColRencontre" prefWidth="293.0" text="Nom rencontre" />
          </columns>
       </TableView>
-      <ComboBox fx:id="cbGroupeAvantRencontre" layoutX="516.0" layoutY="265.0" onAction="#RemplissageRencontreAPresChoixTitreEtGroupe" prefWidth="150.0" promptText="Quel groupe ?" />
-      <Text layoutX="29.0" layoutY="396.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Quelle spécialité ont les membres ayant joué à telle renconre ?" wrappingWidth="285.26953125" />
-      <ComboBox fx:id="CbRencontrAvSpecialite" layoutX="348.0" layoutY="387.0" prefWidth="150.0" promptText="Nom rencontre ?" />
-      <ComboBox fx:id="CbSpecialiteAvantMembre" layoutX="516.0" layoutY="387.0" onAction="#RemplissageMembreApresRencontreEtSpecialite" prefWidth="150.0" promptText="La spécialité ?" />
-      <TableView fx:id="tvMembreRencontreSpecialite" layoutX="673.0" layoutY="352.0" onMouseClicked="#handleMouseAction" onSort="#RemplissageMembreApresRencontreEtSpecialite" prefHeight="95.0" prefWidth="329.0">
+      <ComboBox fx:id="cbGroupeAvantRencontre" layoutX="528.0" layoutY="235.0" onAction="#RemplissageRencontreAPresChoixTitreEtGroupe" prefWidth="150.0" promptText="Quel groupe ?" />
+      <Text layoutX="41.0" layoutY="354.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Quelle spécialité ont les membres ayant joué à telle renconre ?" wrappingWidth="285.26953125" />
+      <ComboBox fx:id="CbRencontrAvSpecialite" layoutX="360.0" layoutY="345.0" prefWidth="150.0" promptText="Nom rencontre ?" />
+      <ComboBox fx:id="CbSpecialiteAvantMembre" layoutX="526.0" layoutY="345.0" onAction="#RemplissageMembreApresRencontreEtSpecialite" prefWidth="150.0" promptText="La spécialité ?" />
+      <TableView fx:id="tvMembreRencontreSpecialite" layoutX="682.0" layoutY="317.0" onMouseClicked="#handleMouseAction" onSort="#RemplissageMembreApresRencontreEtSpecialite" prefHeight="95.0" prefWidth="329.0">
          <columns>
             <TableColumn fx:id="colNomMembre" prefWidth="178.0" text="Nom membre" />
             <TableColumn fx:id="colPrenomMembre" prefWidth="100.0" text="Prénom membre" />
          </columns>
       </TableView>
-      <Text layoutX="29.0" layoutY="502.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Durée du titre à rechercher" wrappingWidth="285.26953125" />
-      <ComboBox fx:id="cbPays" layoutX="348.0" layoutY="485.0" prefWidth="150.0" promptText="Pays ?" />
-      <ComboBox fx:id="cbRegion" layoutX="516.0" layoutY="485.0" prefWidth="150.0" promptText="Ou région ?" />
-      <TableView fx:id="TvTitreEtDuree" layoutX="673.0" layoutY="467.0" onMouseClicked="#handleMouseAction" prefHeight="95.0" prefWidth="329.0">
+      <Text layoutX="30.0" layoutY="469.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Durée du titre à rechercher" wrappingWidth="285.26953125" />
+      <ComboBox fx:id="cbPays" layoutX="361.0" layoutY="452.0" prefWidth="150.0" promptText="Pays ?" />
+      <ComboBox fx:id="cbRegion" layoutX="525.0" layoutY="452.0" prefWidth="150.0" promptText="Ou région ?" />
+      <TableView fx:id="TvTitreEtDuree" layoutX="682.0" layoutY="438.0" onMouseClicked="#handleMouseAction" prefHeight="95.0" prefWidth="329.0">
          <columns>
             <TableColumn fx:id="colTitre" prefWidth="220.0" text="Titre" />
             <TableColumn fx:id="colDuree" prefWidth="110.0" text="Duée du titre" />
          </columns>
       </TableView>
-      <Spinner fx:id="spDureeTitre" initialValue="1" layoutX="185.0" layoutY="485.0" max="120" prefHeight="25.0" prefWidth="66.0" />
-      <Text layoutX="274.0" layoutY="502.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Minutes" />
-      <Button fx:id="btnRechercheTitreEtDuree" layoutX="390.0" layoutY="527.0" mnemonicParsing="false" onAction="#RemplissageTitreApresChoixPaysRegion" text="Recherche du titre après vos choix ci-dessus " />
+      <Spinner fx:id="spDureeTitre" initialValue="1" layoutX="186.0" layoutY="452.0" max="120" min="1" prefHeight="25.0" prefWidth="66.0" />
+      <Text layoutX="275.0" layoutY="469.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Minutes" />
+      <Button fx:id="btnRechercheTitreEtDuree" layoutX="395.0" layoutY="494.0" mnemonicParsing="false" onAction="#RemplissageTitreApresChoixPaysRegion" text="Recherche du titre après vos choix ci-dessus " />
+      <Text layoutX="29.0" layoutY="579.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Rencontres ou un nombre de groupe donné à jouer" wrappingWidth="285.26953125" />
+      <Spinner fx:id="spNbGroupe" initialValue="1" layoutX="362.0" layoutY="560.0" max="3" min="1" prefHeight="25.0" prefWidth="66.0" />
+      <Button fx:id="btChercheRencontreXGroupeJoue" layoutX="436.0" layoutY="560.0" mnemonicParsing="false" onAction="#RemplissageRencontreSuivantLesGroupes" text="Cherche les rencontres pour ce critère" />
+      <TableView fx:id="tvRencontreInstrument" layoutX="682.0" layoutY="670.0" onMouseClicked="#handleMouseAction" prefHeight="95.0" prefWidth="329.0">
+         <columns>
+            <TableColumn fx:id="colNomRencontre1" prefWidth="327.0" text="Rencontre" />
+         </columns>
+      </TableView>
+      <ComboBox fx:id="cbInstrument" layoutX="453.0" layoutY="693.0" prefWidth="150.0" promptText="Quel instrument ?" />
+        <VBox alignment="TOP_RIGHT" layoutX="500.0" layoutY="674.0" prefHeight="200.0" prefWidth="46.0" spacing="21.0">
+            <children>
+                <Label text="ID" textFill="WHITE">
+                    <font>
+                        <Font size="14.0" />
+                    </font>
+                </Label>
+                <Label text="Ren" textFill="WHITE">
+                    <font>
+                        <Font size="14.0" />
+                    </font>
+                </Label>
+                <Label text="Lieu" textFill="WHITE">
+                    <font>
+                        <Font size="14.0" />
+                    </font>
+                </Label>
+                <Label text="Période" textFill="WHITE">
+                    <font>
+                        <Font size="14.0" />
+                    </font>
+                </Label>
+            </children>
+        </VBox>
+      <Text layoutX="40.0" layoutY="710.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Affiche la rencontre ou cet instrument est utilisé" wrappingWidth="285.26953125" />
     </children>
 </AnchorPane>
