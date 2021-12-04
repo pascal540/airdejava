@@ -123,14 +123,17 @@ public class MainController implements Initializable {
     private ComboBox<String> cbInstrument;
    
     @FXML
-    private TableView<Instrument> tvRencontreInstrument;
+    private TableView<Rencontre> tvRencontreInstrument;
+    @FXML
+    private TableColumn<Rencontre, String> colNomRencontreInstrument;
 
     ObservableList<Titre> nomTitreList = FXCollections.observableArrayList();
     ObservableList<Groupe> nomGroupeList = FXCollections.observableArrayList();
     ObservableList<Rencontre> nomRencontreList = FXCollections.observableArrayList();
     ObservableList<Membre> nomMembreList = FXCollections.observableArrayList();
     ObservableList<Titre> nomTitreEtDuree = FXCollections.observableArrayList();
-    ObservableList<Rencontre> nomRencontreSuivantNbGroupesList  = FXCollections.observableArrayList();
+    ObservableList<Rencontre> nomRencontreSuivantNbGroupesList = FXCollections.observableArrayList();
+     ObservableList<Rencontre> nomRencontreAvecInstrumentList  = FXCollections.observableArrayList();
     
     @FXML
     void handleButtonAction(ActionEvent event) throws SQLException {
@@ -578,10 +581,72 @@ public class MainController implements Initializable {
          connection.close();
          return  nomRencontreSuivantNbGroupesList;
      }
- public void AffichageRencontreNGroupes() {
-        colNomRencontre.setCellValueFactory(new PropertyValueFactory<Rencontre, String>("_nomRencontre"));
+
+     public void AffichageRencontreNGroupes() {
+         colNomRencontre.setCellValueFactory(new PropertyValueFactory<Rencontre, String>("_nomRencontre"));
          tvRencontre.setItems(nomRencontreSuivantNbGroupesList);
      }
+     // Affichage des rencontres ou tel instruent est joue 
+     private void RemplissageComboBoxInstrument() {
+
+         LinkedList<String> combo = new LinkedList<>();
+
+         DataBaseConnection dataBaseConnection = new DataBaseConnection();
+         Connection connection = dataBaseConnection.getConnection();
+
+         String query = "call affichageInstrument";
+
+         try {
+             Statement statement = connection.createStatement();
+             ResultSet rs = statement.executeQuery(query);
+             while (rs.next()) {
+
+                 combo.add(rs.getString("nom_instrument"));
+             }
+             cbInstrument.getItems().addAll(combo);
+         } catch (Exception e) {
+             e.printStackTrace();
+             System.out.println("ERREUR DANS LA REQUETE affichageInstrument");
+         }
+     }
+    
+    @FXML
+     private ObservableList<Rencontre> RemplissageRencontreAvecInstrument( ActionEvent event) throws SQLException
+     {
+         String res = cbInstrument.getValue();
+         
+       nomRencontreAvecInstrumentList.clear();
+     
+          DataBaseConnection dataBaseConnection = new DataBaseConnection();
+         Connection connection = dataBaseConnection.getConnection();
+         String query = "call rencontre_quel_instrument(?)";
+         // indispensable pour procedure stockee et fonctions
+         CallableStatement cs = (CallableStatement) connection.prepareCall(query);
+         cs.setString(1, res); //nbGroupes           
+         cs.execute();  
+         try {
+             ResultSet rs = cs.getResultSet();
+             while (rs.next()) {
+                System.out.println(rs);
+                Rencontre ligneRencontre = new Rencontre();
+                ligneRencontre.set_nomRencontre(rs.getString("nom_rencontre"));                                                               
+                nomRencontreAvecInstrumentList.add(ligneRencontre);
+                 
+             }
+         } catch (Exception e) {
+             e.printStackTrace();
+             System.out.println("Erreur dans la requete rencontre_quel_instrument");
+         }
+         connection.close();
+         return  nomRencontreAvecInstrumentList;
+     }
+ public void AffichageRencontreInstrument() {
+        colNomRencontreInstrument.setCellValueFactory(new PropertyValueFactory<Rencontre, String>("_nomRencontre"));
+         tvRencontreInstrument.setItems(nomRencontreAvecInstrumentList);
+     }
+
+
+
     // private void insertBook() throws SQLException {
     // String query = "INSERT INTO book VALUES ('" + tfId.getText() + "', '" +
     // tfTitle.getText() + "', '"
@@ -629,6 +694,7 @@ public class MainController implements Initializable {
         RemplissageComboBoxTitre();
         RemplissageComboBoxTitreAvantGroupe();
         RemplissageComboBoxGroupeAvantRencontre();
+        RemplissageComboBoxInstrument();
         AffichageNomDesGroupes();
         AffichageNomDesRencontres();
         RemplissageComboBoxRencontre();
@@ -638,6 +704,7 @@ public class MainController implements Initializable {
         RemplissageComboBoxRegion();
         AffichageTitreEtDuree();
         AffichageRencontreNGroupes();
+        AffichageRencontreInstrument();
 
     }
 }
