@@ -170,5 +170,6 @@
             <TableColumn fx:id="colNomRencontreInstrument11" prefWidth="150.0" text="Groupe" />
          </columns>
       </TableView>
+      <Text layoutX="802.0" layoutY="830.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Copyrgiht (@) Pascal Haas CDA 2021" />
     </children>
 </AnchorPane>
