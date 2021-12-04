@@ -2,14 +2,14 @@ package fr.pascal.library.controller;
 
 // import fr.pascal.library.entity.Book;
 import fr.pascal.library.entity.Rencontre;
-import fr.pascal.library.entity.Specialite;
+// import fr.pascal.library.entity.Specialite;
 import fr.pascal.library.entity.Titre;
 import fr.pascal.library.entity.Est_programmee;
 import fr.pascal.library.entity.Groupe;
-import fr.pascal.library.entity.Instrument;
+// import fr.pascal.library.entity.Instrument;
 import fr.pascal.library.entity.Membre;
-import fr.pascal.library.entity.Pays;
-import fr.pascal.library.entity.Region;
+// import fr.pascal.library.entity.Pays;
+// import fr.pascal.library.entity.Region;
 import fr.pascal.library.utils.DataBaseConnection;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -126,6 +126,16 @@ public class MainController implements Initializable {
     private TableView<Rencontre> tvRencontreInstrument;
     @FXML
     private TableColumn<Rencontre, String> colNomRencontreInstrument;
+
+    // partie cherche planning suivant lieu rencontre et groupe
+    @FXML
+    private TableView<Est_programmee> tvRencontreILieuGroupe;
+    @FXML
+    private ComboBox<String> cbLieuRencontre;
+    @FXML
+    private ComboBox<String> cbGroupeRencontre;
+    
+
 
     ObservableList<Titre> nomTitreList = FXCollections.observableArrayList();
     ObservableList<Groupe> nomGroupeList = FXCollections.observableArrayList();
@@ -295,6 +305,7 @@ public class MainController implements Initializable {
                 combo.add(rs.getString("nomTitre"));
             }
             cbTitreAvantGroupe.getItems().addAll(combo);
+            
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("ERREUR DANS LA REQUETE Repertoire pour comboTitreAvantGroupe ");
@@ -322,6 +333,7 @@ public class MainController implements Initializable {
                 combo.add(rs.getString("denomination_groupe"));
             }
             cbGroupeAvantRencontre.getItems().addAll(combo);
+            cbGroupeRencontre.getItems().addAll(combo); // pour la requete planning
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("ERREUR DANS LA REQUETE groupe comboGroupeAvantRencontre ");
@@ -645,7 +657,31 @@ public class MainController implements Initializable {
          tvRencontreInstrument.setItems(nomRencontreAvecInstrumentList);
      }
 
+     // partie affichage planning suivant lieu de rencontre et groupe
+     // Méthodes de remplissages de comboBox cdTitre avec tous les titres de
+    // repertoire
+    private void RemplissageComboBoxLieuRencontre() {
 
+        LinkedList<String> combo = new LinkedList<>();
+
+        DataBaseConnection dataBaseConnection = new DataBaseConnection();
+        Connection connection = dataBaseConnection.getConnection();
+
+        String query = "call affichageLieuRencontre";
+
+        try {
+            Statement statement = connection.createStatement();
+            ResultSet rs = statement.executeQuery(query);
+            while (rs.next()) {
+
+                combo.add(rs.getString("lieu_rencontre"));
+            }
+            cbLieuRencontre.getItems().addAll(combo);
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("ERREUR DANS LA REQUETE affichageLieuRencontre");
+        }
+    }
 
     // private void insertBook() throws SQLException {
     // String query = "INSERT INTO book VALUES ('" + tfId.getText() + "', '" +
@@ -705,6 +741,6 @@ public class MainController implements Initializable {
         AffichageTitreEtDuree();
         AffichageRencontreNGroupes();
         AffichageRencontreInstrument();
-
+        RemplissageComboBoxLieuRencontre();
     }
 }
