@@ -148,8 +148,9 @@ public class MainController implements Initializable {
     private TableColumn<Planning, String> colRencontrePlanning;
 
      @FXML
-    private ComboBox<String> cbInstrumentEFamille;
-    
+    private ComboBox<String> cbInstrumentCrud;
+     @FXML
+    private ComboBox<String> cbTitreaSupprimer;
 
     ObservableList<Titre> nomTitreList = FXCollections.observableArrayList();
     ObservableList<Groupe> nomGroupeList = FXCollections.observableArrayList();
@@ -166,9 +167,9 @@ public class MainController implements Initializable {
         if (event.getSource() == btnInsert) {
             // insertBook();
         } else if (event.getSource() == btnUpdate) {
-            // updateBook();
+             updateInstrument();
         } else if (event.getSource() == btnDelete) {
-            // deleteBook();
+             deleteTitre();
         }
     }
 
@@ -200,27 +201,7 @@ public class MainController implements Initializable {
      * @return rencontreList
      */
 
-    private ObservableList<Rencontre> getRencontreList() {
-        ObservableList<Rencontre> rencontreList = FXCollections.observableArrayList();
-        DataBaseConnection dataBaseConnection = new DataBaseConnection();
-        Connection connection = dataBaseConnection.getConnection();
-        String query = "SELECT * FROM rencontre";
-        try {
-            Statement statement = connection.createStatement();
-            ResultSet rs = statement.executeQuery(query);
-            while (rs.next()) {
-                Rencontre rencontre = new Rencontre(rs.getInt("id_rencontre"), rs.getString("nom_rencontre"),
-                        rs.getString("lieu_rencontre"), rs.getString("periodicite_rencontre"));
-                rencontreList.add(rencontre);
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("Erreur dans le SELECT Rencontre");
-        }
-        return rencontreList;
-    }
-
+     
     /**
      * Remplissage tableview Rencontre  
      */
@@ -256,6 +237,7 @@ public class MainController implements Initializable {
                 combo.add(rs.getString("nomTitre"));
             }
             cbTitre.getItems().addAll(combo);
+             cbTitreaSupprimer.getItems().addAll(combo);
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("ERREUR DANS LA REQUETE Titre");
@@ -632,7 +614,7 @@ public class MainController implements Initializable {
                  combo.add(rs.getString("nom_instrument"));
              }
              cbInstrument.getItems().addAll(combo);
-              
+              cbInstrumentCrud.getItems().addAll(combo);
          } catch (Exception e) {
              e.printStackTrace();
              System.out.println("ERREUR DANS LA REQUETE affichageInstrument");
@@ -707,9 +689,7 @@ public class MainController implements Initializable {
          String res2 = cbGroupeRencontre.getValue();
         // System.out.println(res);
         // System.out.println(res2);
-
          nomPlanningList.clear();
-
          DataBaseConnection dataBaseConnection = new DataBaseConnection();
          Connection connection = dataBaseConnection.getConnection();
          String query = "call planning_rencontre_lieu_groupe(?,?)";
@@ -739,7 +719,7 @@ public class MainController implements Initializable {
          return nomPlanningList;
      }
 
-     public void AffichagePlannig() {
+     public void AffichagePlanning() {
          // les champs correspondent aux champs de la classe Planning 
          colDebut.setCellValueFactory(new PropertyValueFactory<Planning, Time>("_heureDebut"));
          colFin.setCellValueFactory(new PropertyValueFactory<Planning, Time>("_heureFin"));
@@ -749,37 +729,7 @@ public class MainController implements Initializable {
          tvPlanningRencontre.setItems(nomPlanningList);
      }
 
-     // partie modification instruments CRUD
-     // Remplissage familel instruent dans un combo
-     private void RemplissageComboBoxInstrumentCrud() {
-
-        LinkedList<String> combo = new LinkedList<>();
-
-        DataBaseConnection dataBaseConnection = new DataBaseConnection();
-        Connection connection = dataBaseConnection.getConnection();
-
-        String query = "call AfficheInstrumentEtFamille";
-
-        try {
-            Statement statement = connection.createStatement();
-            ResultSet rs = statement.executeQuery(query);
-            while (rs.next()) {
-
-                // combo.add(rs.getString("nom_instrument"));
-                String ligne1= rs.getString("nom_instrument");
-                String ligne2 = rs.getString("type_instrument");
-                String ligne3 = ligne1 + " de type : "+ligne2;
-                combo.add(ligne3);
-                
-
-                // combo.add(rs.getString("type_instrument"));
-            }
-         cbInstrumentEFamille.getItems().addAll(combo);
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("ERREUR DANS LA REQUETE AfficheInstrumentEtFamille");
-        }
-    }
+    
     // private void insertBook() throws SQLException {
     // String query = "INSERT INTO book VALUES ('" + tfId.getText() + "', '" +
     // tfTitle.getText() + "', '"
@@ -789,40 +739,43 @@ public class MainController implements Initializable {
     // displayTableView();
     // }
 
-    // private void deleteBook() throws SQLException {
-    // String query = "DELETE FROM book WHERE id = '" + tfId.getText() + "'";
-    // executeQuery(query);
+    private void deleteTitre() throws SQLException {
+      String query = "DELETE FROM titre WHERE nomTitre = '" + cbTitreaSupprimer.getValue() + "'";
+      executeQuery(query);
     // displayTableView();
-    // }
+    //
+     }
 
-    // private void updateBook() throws SQLException {
-    // String query = "UPDATE book SET title = '" + tfTitle.getText() + "', author =
-    // '" + tfAuthor.getText()
-    // + "', year = '" + tfYear.getText() + "', pages = '" + tfPages.getText() + "'
-    // WHERE id = '"
-    // + tfId.getText() + "';";
-    // executeQuery(query);
-    // displayTableView();
-    // }
+    private void updateInstrument() throws SQLException {
+      System.out.println(cbInstrumentCrud);
+      System.out.println(tfNomInstrument.getText());
+      String query ="UPDATE instrument SET nom_instrument= '"+ tfNomInstrument.getText() +"'"+
+              " where nom_instrument ='" + cbInstrumentCrud.getValue()+"'";
+    //   System.out.println( query);
+      executeQuery(query);
+    //    displayTableView();
+    //  
+    }
 
-    // Méthode qui permet de factoriser la connection à la BDD, en même temps que
-    // d'exécuter nos requêtes
-    // private void executeQuery(String query) throws SQLException {
-    // DataBaseConnection dataBaseConnection = new DataBaseConnection();
-    // Connection connection = dataBaseConnection.getConnection();
-    // try {
-    // Statement statement = connection.createStatement();
-    // statement.executeUpdate(query);
-    // } catch (Exception e) {
-    // e.printStackTrace();
-    // System.out.println("Erreur SQL");
-    // }
-    // connection.close();
-    // }
+    /* Méthode qui permet de factoriser la connection à la BDD, en même temps que
+     d'exécuter nos requêtes*/
+
+     private void executeQuery(String query) throws SQLException {
+      DataBaseConnection dataBaseConnection = new DataBaseConnection();
+     Connection connection = dataBaseConnection.getConnection();
+      try {
+      Statement statement = connection.createStatement();
+      statement.executeUpdate(query);
+      } catch (Exception e) {
+     e.printStackTrace();
+      System.out.println("Erreur SQL");
+      }
+      connection.close();
+      }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        // getRencontreList();
+        
         //displayTableViewRencontre();
         RemplissageComboBoxTitre();
         RemplissageComboBoxTitreAvantGroupe();
@@ -839,7 +792,7 @@ public class MainController implements Initializable {
         AffichageRencontreNGroupes();
         AffichageRencontreInstrument();
         RemplissageComboBoxLieuRencontre();
-        AffichagePlannig();
-        RemplissageComboBoxInstrumentCrud();
+        AffichagePlanning();
+
     }
 }

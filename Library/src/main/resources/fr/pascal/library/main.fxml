@@ -26,7 +26,7 @@
                 <TableColumn fx:id="colNomRencontre" prefWidth="327.0" text="Rencontre avec n groupe" />
             </columns>
         </TableView>
-        <Button fx:id="btnInsert" layoutX="10.0" layoutY="801.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="26.0" prefWidth="88.0" style="-fx-background-color: #4AC9D8#4AC9D8;" text="Insert" textFill="WHITE">
+        <Button fx:id="btnInsert" layoutX="114.0" layoutY="734.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="26.0" prefWidth="88.0" style="-fx-background-color: #4AC9D8#4AC9D8;" text="Insert" textFill="WHITE">
             <graphic>
                 <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
                     <image>
@@ -37,7 +37,7 @@
             <cursor>
                 <Cursor fx:constant="HAND" />
             </cursor></Button>
-        <Button fx:id="btnUpdate" layoutX="104.0" layoutY="800.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="26.0" prefWidth="88.0" style="-fx-background-color: #4AC9D8#4AC9D8;" text="Update" textFill="WHITE">
+        <Button fx:id="btnUpdate" layoutX="111.0" layoutY="316.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="26.0" prefWidth="88.0" style="-fx-background-color: #4AC9D8#4AC9D8;" text="Update" textFill="WHITE">
             <graphic>
                 <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
                     <image>
@@ -48,7 +48,7 @@
             <cursor>
                 <Cursor fx:constant="HAND" />
             </cursor></Button>
-        <Button fx:id="btnDelete" layoutX="207.0" layoutY="800.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="26.0" prefWidth="88.0" style="-fx-background-color: #FF8D8D#FF8D8D;" text="Delete" textFill="WHITE">
+        <Button fx:id="btnDelete" layoutX="114.0" layoutY="528.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="26.0" prefWidth="88.0" style="-fx-background-color: #FF8D8D#FF8D8D;" text="Delete" textFill="WHITE">
             <graphic>
                 <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
                     <image>
@@ -170,9 +170,15 @@
             <Font name="Elephant" size="15.0" />
          </font>
       </Text>
-      <ComboBox fx:id="cbInstrumentEFamille" layoutX="25.0" layoutY="188.0" prefHeight="25.0" prefWidth="253.0" promptText="Liste des instruments et familles " />
+      <ComboBox fx:id="cbInstrumentCrud" layoutX="25.0" layoutY="188.0" prefHeight="25.0" prefWidth="253.0" promptText="Liste des instruments" />
       <Line endX="206.0" endY="586.0" layoutX="104.0" layoutY="242.0" startX="206.0" startY="-93.0" stroke="#a4121c" strokeWidth="3.0" />
-          <TextField fx:id="tfNomInstrument" layoutX="33.0" layoutY="265.0" prefHeight="25.0" prefWidth="108.0" />
-          <TextField fx:id="tfTypeInstrument" layoutX="187.0" layoutY="266.0" prefHeight="25.0" prefWidth="108.0" />
+          <TextField fx:id="tfNomInstrument" layoutX="104.0" layoutY="266.0" prefHeight="25.0" prefWidth="108.0" />
+          <TextField fx:id="tfTypeInstrument" layoutX="104.0" layoutY="662.0" prefHeight="25.0" prefWidth="108.0" />
+      <Text layoutX="34.0" layoutY="258.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Entrez un nouveau nom pour cet instrument" />
+      <Line endX="336.5" endY="194.0" layoutX="-27.0" layoutY="190.0" startX="27.0" startY="194.0" stroke="#c92626" strokeWidth="2.0" />
+      <Text layoutX="41.0" layoutY="430.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Le titre  dans la liste ci-dessous sera supprimé " />
+      <ComboBox fx:id="cbTitreaSupprimer" layoutX="83.0" layoutY="467.0" onAction="#RemplissageTvGroupe" prefWidth="150.0" promptText="Titre à supprimer" />
+      <Line endX="336.5" endY="194.0" layoutX="-27.0" layoutY="392.0" startX="27.0" startY="194.0" stroke="#c92626" strokeWidth="2.0" />
+      <Text layoutX="66.0" layoutY="629.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Entrez le titre à insérer ci-dessous" />
     </children>
 </AnchorPane>
