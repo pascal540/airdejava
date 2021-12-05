@@ -8,6 +8,7 @@ import fr.pascal.library.entity.Est_programmee;
 import fr.pascal.library.entity.Groupe;
 // import fr.pascal.library.entity.Instrument;
 import fr.pascal.library.entity.Membre;
+import fr.pascal.library.entity.Planning;
 // import fr.pascal.library.entity.Pays;
 // import fr.pascal.library.entity.Region;
 import fr.pascal.library.utils.DataBaseConnection;
@@ -30,6 +31,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Time;
 import java.util.ResourceBundle;
 import java.util.Date;
 import com.mysql.cj.jdbc.CallableStatement;
@@ -129,13 +131,22 @@ public class MainController implements Initializable {
 
     // partie cherche planning suivant lieu rencontre et groupe
     @FXML
-    private TableView<Est_programmee> tvRencontreILieuGroupe;
+    private TableView<Planning> tvPlanningRencontre;
     @FXML
     private ComboBox<String> cbLieuRencontre;
     @FXML
     private ComboBox<String> cbGroupeRencontre;
-    
+     @FXML
+    private TableColumn<Planning, Date> colDate;
 
+    @FXML
+    private TableColumn< Planning, Time> colDebut;
+    
+    @FXML
+    private TableColumn<Planning, Time> colFin;
+@FXML
+private TableColumn<Planning, String> colRencontrePlanning;
+    
 
     ObservableList<Titre> nomTitreList = FXCollections.observableArrayList();
     ObservableList<Groupe> nomGroupeList = FXCollections.observableArrayList();
@@ -143,8 +154,10 @@ public class MainController implements Initializable {
     ObservableList<Membre> nomMembreList = FXCollections.observableArrayList();
     ObservableList<Titre> nomTitreEtDuree = FXCollections.observableArrayList();
     ObservableList<Rencontre> nomRencontreSuivantNbGroupesList = FXCollections.observableArrayList();
-     ObservableList<Rencontre> nomRencontreAvecInstrumentList  = FXCollections.observableArrayList();
-    
+    ObservableList<Rencontre> nomRencontreAvecInstrumentList  = FXCollections.observableArrayList();
+    ObservableList<Planning> nomPlanningList = FXCollections.observableArrayList();
+ 
+ 
     @FXML
     void handleButtonAction(ActionEvent event) throws SQLException {
         if (event.getSource() == btnInsert) {
@@ -658,8 +671,8 @@ public class MainController implements Initializable {
      }
 
      // partie affichage planning suivant lieu de rencontre et groupe
-     // Méthodes de remplissages de comboBox cdTitre avec tous les titres de
-    // repertoire
+     // Méthodes de remplissages de comboBox lieu rencontre et groupe : groupe est deja rempli
+     
     private void RemplissageComboBoxLieuRencontre() {
 
         LinkedList<String> combo = new LinkedList<>();
@@ -682,7 +695,55 @@ public class MainController implements Initializable {
             System.out.println("ERREUR DANS LA REQUETE affichageLieuRencontre");
         }
     }
+     
+@FXML
+     private ObservableList<Planning> RemplissagePlanning( ActionEvent event) throws SQLException
+     {
+         String res = cbLieuRencontre.getValue();
+         String res2 = cbGroupeRencontre.getValue();
+        // System.out.println(res);
+        // System.out.println(res2);
 
+         nomPlanningList.clear();
+
+         DataBaseConnection dataBaseConnection = new DataBaseConnection();
+         Connection connection = dataBaseConnection.getConnection();
+         String query = "call planning_rencontre_lieu_groupe(?,?)";
+         // indispensable pour procedure stockee et fonctions
+         CallableStatement cs = (CallableStatement) connection.prepareCall(query);
+         cs.setString(1, res); //lieu de la rencontre du combo
+         cs.setString(2, res2); //nom du groupe du combo
+         cs.execute();
+         try {
+             ResultSet rs = cs.getResultSet();
+             while (rs.next()) {
+                 Planning lignePlanning = new Planning();
+                 lignePlanning.set_nomRencontre(rs.getString("nom_rencontre"));
+               
+                 lignePlanning.set_heureDebut(rs.getTime("heure_debut_presentation"));
+                 lignePlanning.set_heureFin(rs.getTime("heure_fin_presentation"));
+                 lignePlanning.set_datePassageGroupe(rs.getDate("date_passage_groupe"));
+                 
+                 nomPlanningList.add(lignePlanning);
+
+             }
+         } catch (Exception e) {
+             e.printStackTrace();
+             System.out.println("Erreur dans la requete planning_rencontre_lieu_groupe");
+         }
+         connection.close();
+         return nomPlanningList;
+     }
+
+public void AffichagePlannig() {
+   // les champs correspondent aux champs de la classe Planning 
+    colDebut.setCellValueFactory(new PropertyValueFactory<Planning, Time>("_heureDebut"));
+    colFin.setCellValueFactory(new PropertyValueFactory<Planning, Time>("_heureFin"));
+    colDate.setCellValueFactory(new PropertyValueFactory<Planning, Date>("_datePassageGroupe"));
+    colRencontrePlanning.setCellValueFactory(new PropertyValueFactory<Planning, String>("_nomRencontre"));
+        
+    tvPlanningRencontre.setItems(nomPlanningList);
+     }
     // private void insertBook() throws SQLException {
     // String query = "INSERT INTO book VALUES ('" + tfId.getText() + "', '" +
     // tfTitle.getText() + "', '"
@@ -742,5 +803,6 @@ public class MainController implements Initializable {
         AffichageRencontreNGroupes();
         AffichageRencontreInstrument();
         RemplissageComboBoxLieuRencontre();
+        AffichagePlannig();
     }
 }
