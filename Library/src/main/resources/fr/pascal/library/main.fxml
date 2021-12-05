@@ -21,14 +21,6 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="850.0" prefWidth="1024.0" style="-fx-background-color: #DDFFBB;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.pascal.library.controller.MainController">
     <children>
-        <VBox layoutX="71.0" layoutY="587.0" prefHeight="156.0" prefWidth="224.0" spacing="13.0">
-            <children>
-                <TextField fx:id="tfTitle" />
-                <TextField fx:id="tfAuthor" />
-                <TextField fx:id="tfYear" />
-                <TextField fx:id="tfId" />
-            </children>
-        </VBox>
         <TableView fx:id="tvRencontre" layoutX="682.0" layoutY="487.0" onMouseClicked="#handleMouseAction" prefHeight="95.0" prefWidth="329.0">
             <columns>
                 <TableColumn fx:id="colNomRencontre" prefWidth="327.0" text="Rencontre avec n groupe" />
@@ -173,5 +165,14 @@
          </columns>
       </TableView>
       <Text layoutX="802.0" layoutY="830.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Copyrgiht (@) Pascal Haas CDA 2021" />
+      <Text fill="#1e0101" layoutX="13.0" layoutY="158.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Modification  et création instrument">
+         <font>
+            <Font name="Elephant" size="15.0" />
+         </font>
+      </Text>
+      <ComboBox fx:id="cbInstrumentEFamille" layoutX="25.0" layoutY="188.0" prefHeight="25.0" prefWidth="253.0" promptText="Liste des instruments et familles " />
+      <Line endX="206.0" endY="586.0" layoutX="104.0" layoutY="242.0" startX="206.0" startY="-93.0" stroke="#a4121c" strokeWidth="3.0" />
+          <TextField fx:id="tfNomInstrument" layoutX="33.0" layoutY="265.0" prefHeight="25.0" prefWidth="108.0" />
+          <TextField fx:id="tfTypeInstrument" layoutX="187.0" layoutY="266.0" prefHeight="25.0" prefWidth="108.0" />
     </children>
 </AnchorPane>

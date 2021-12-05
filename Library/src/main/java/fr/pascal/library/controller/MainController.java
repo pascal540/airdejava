@@ -43,7 +43,7 @@ public class MainController implements Initializable {
     @FXML
     private Button btnInsert, btnUpdate, btnDelete;
     @FXML
-    private TextField tfId, tfTitle, tfAuthor, tfYear, tfPages;
+    private TextField tfNomInstrument, tfNomTypeInstrument;
     // @FXML private TableView<Book> tvBooks;
     @FXML
     private TableView<Rencontre> tvRencontre;
@@ -144,8 +144,11 @@ public class MainController implements Initializable {
     
     @FXML
     private TableColumn<Planning, Time> colFin;
-@FXML
-private TableColumn<Planning, String> colRencontrePlanning;
+    @FXML
+    private TableColumn<Planning, String> colRencontrePlanning;
+
+     @FXML
+    private ComboBox<String> cbInstrumentEFamille;
     
 
     ObservableList<Titre> nomTitreList = FXCollections.observableArrayList();
@@ -629,6 +632,7 @@ private TableColumn<Planning, String> colRencontrePlanning;
                  combo.add(rs.getString("nom_instrument"));
              }
              cbInstrument.getItems().addAll(combo);
+              
          } catch (Exception e) {
              e.printStackTrace();
              System.out.println("ERREUR DANS LA REQUETE affichageInstrument");
@@ -735,15 +739,47 @@ private TableColumn<Planning, String> colRencontrePlanning;
          return nomPlanningList;
      }
 
-public void AffichagePlannig() {
-   // les champs correspondent aux champs de la classe Planning 
-    colDebut.setCellValueFactory(new PropertyValueFactory<Planning, Time>("_heureDebut"));
-    colFin.setCellValueFactory(new PropertyValueFactory<Planning, Time>("_heureFin"));
-    colDate.setCellValueFactory(new PropertyValueFactory<Planning, Date>("_datePassageGroupe"));
-    colRencontrePlanning.setCellValueFactory(new PropertyValueFactory<Planning, String>("_nomRencontre"));
-        
-    tvPlanningRencontre.setItems(nomPlanningList);
+     public void AffichagePlannig() {
+         // les champs correspondent aux champs de la classe Planning 
+         colDebut.setCellValueFactory(new PropertyValueFactory<Planning, Time>("_heureDebut"));
+         colFin.setCellValueFactory(new PropertyValueFactory<Planning, Time>("_heureFin"));
+         colDate.setCellValueFactory(new PropertyValueFactory<Planning, Date>("_datePassageGroupe"));
+         colRencontrePlanning.setCellValueFactory(new PropertyValueFactory<Planning, String>("_nomRencontre"));
+
+         tvPlanningRencontre.setItems(nomPlanningList);
      }
+
+     // partie modification instruments CRUD
+     // Remplissage familel instruent dans un combo
+     private void RemplissageComboBoxInstrumentCrud() {
+
+        LinkedList<String> combo = new LinkedList<>();
+
+        DataBaseConnection dataBaseConnection = new DataBaseConnection();
+        Connection connection = dataBaseConnection.getConnection();
+
+        String query = "call AfficheInstrumentEtFamille";
+
+        try {
+            Statement statement = connection.createStatement();
+            ResultSet rs = statement.executeQuery(query);
+            while (rs.next()) {
+
+                // combo.add(rs.getString("nom_instrument"));
+                String ligne1= rs.getString("nom_instrument");
+                String ligne2 = rs.getString("type_instrument");
+                String ligne3 = ligne1 + " de type : "+ligne2;
+                combo.add(ligne3);
+                
+
+                // combo.add(rs.getString("type_instrument"));
+            }
+         cbInstrumentEFamille.getItems().addAll(combo);
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("ERREUR DANS LA REQUETE AfficheInstrumentEtFamille");
+        }
+    }
     // private void insertBook() throws SQLException {
     // String query = "INSERT INTO book VALUES ('" + tfId.getText() + "', '" +
     // tfTitle.getText() + "', '"
@@ -804,5 +840,6 @@ public void AffichagePlannig() {
         AffichageRencontreInstrument();
         RemplissageComboBoxLieuRencontre();
         AffichagePlannig();
+        RemplissageComboBoxInstrumentCrud();
     }
 }
