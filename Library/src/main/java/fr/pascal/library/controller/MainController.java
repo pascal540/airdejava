@@ -1,16 +1,20 @@
+/** gestion de sur un 'AIR DE JAVA'
+ *  Base de donnees MYSQL
+ *  Auteur Pascal Haas CDA 2021-2022
+ *  FIchier MainController.java
+ *  Novembre 2021
+ */
 package fr.pascal.library.controller;
 
-// import fr.pascal.library.entity.Book;
 import fr.pascal.library.entity.Rencontre;
-// import fr.pascal.library.entity.Specialite;
+
 import fr.pascal.library.entity.Titre;
 import fr.pascal.library.entity.Est_programmee;
 import fr.pascal.library.entity.Groupe;
-// import fr.pascal.library.entity.Instrument;
+ 
 import fr.pascal.library.entity.Membre;
 import fr.pascal.library.entity.Planning;
-// import fr.pascal.library.entity.Pays;
-// import fr.pascal.library.entity.Region;
+ 
 import fr.pascal.library.utils.DataBaseConnection;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -596,6 +600,7 @@ public class MainController implements Initializable {
          colNomRencontre.setCellValueFactory(new PropertyValueFactory<Rencontre, String>("_nomRencontre"));
          tvRencontre.setItems(nomRencontreSuivantNbGroupesList);
      }
+     
      // Affichage des rencontres ou tel instruent est joue 
      private void RemplissageComboBoxInstrument() {
 
@@ -728,8 +733,6 @@ public class MainController implements Initializable {
 
          tvPlanningRencontre.setItems(nomPlanningList);
      }
-
-    
     
 
     private void deleteTitre() throws SQLException {

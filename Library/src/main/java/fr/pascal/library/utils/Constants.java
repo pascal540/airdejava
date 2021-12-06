@@ -1,3 +1,10 @@
+/** gestion de sur un 'AIR DE JAVA'
+ *  Base de donnees MYSQL
+ *  Auteur Pascal Haas CDA 2021-2022
+ *  FIchier constantes.java
+ *  Novembre 2021
+ */
+
 package fr.pascal.library.utils;
 
 public interface Constants {

@@ -105,7 +105,7 @@
       <Button fx:id="btnRechercheTitreEtDuree" layoutX="395.0" layoutY="454.0" mnemonicParsing="false" onAction="#RemplissageTitreApresChoixPaysRegion" text="Recherche du titre après vos choix ci-dessus " />
       <Text layoutX="421.0" layoutY="522.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Rencontres avec 'n' groupe" wrappingWidth="150.0" />
       <Spinner fx:id="spNbGroupe" initialValue="1" layoutX="583.0" layoutY="505.0" max="3" min="1" prefHeight="25.0" prefWidth="66.0" style="-fx-background-color: #9686FF;" />
-      <Button fx:id="btChercheRencontreXGroupeJoue" layoutX="433.0" layoutY="541.0" mnemonicParsing="false" onAction="#RemplissageRencontreAvecInstrument" text="Cherche les rencontres pour ce critère" />
+      <Button fx:id="btChercheRencontreXGroupeJoue" layoutX="433.0" layoutY="541.0" mnemonicParsing="false" onAction="#RemplissageRencontreSuivantLesGroupes" text="Cherche les rencontres pour ce critère" />
       <TableView fx:id="tvRencontreInstrument" layoutX="683.0" layoutY="591.0" onMouseClicked="#handleMouseAction" prefHeight="95.0" prefWidth="329.0">
          <columns>
             <TableColumn fx:id="colNomRencontreInstrument" prefWidth="327.0" text="Rencontre suivant instrument" />

@@ -1,3 +1,9 @@
+ /** gestion de sur un 'AIR DE JAVA'
+ *  Base de donnees MYSQL
+ *  Auteur Pascal Haas CDA 2021-2022
+ *  FIchier classe
+ *  Novembre 2021
+ */
  package fr.pascal.library.entity;
 
  public class Membre {
