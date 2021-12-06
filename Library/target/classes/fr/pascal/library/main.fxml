@@ -26,7 +26,7 @@
                 <TableColumn fx:id="colNomRencontre" prefWidth="327.0" text="Rencontre avec n groupe" />
             </columns>
         </TableView>
-        <Button fx:id="btnInsert" layoutX="114.0" layoutY="734.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="26.0" prefWidth="88.0" style="-fx-background-color: #4AC9D8#4AC9D8;" text="Insert" textFill="WHITE">
+        <Button fx:id="btnInsert" layoutX="114.0" layoutY="761.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="26.0" prefWidth="88.0" style="-fx-background-color: #4AC9D8#4AC9D8;" text="Insert" textFill="WHITE">
             <graphic>
                 <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
                     <image>
@@ -171,14 +171,29 @@
          </font>
       </Text>
       <ComboBox fx:id="cbInstrumentCrud" layoutX="25.0" layoutY="188.0" prefHeight="25.0" prefWidth="253.0" promptText="Liste des instruments" />
-      <Line endX="206.0" endY="586.0" layoutX="104.0" layoutY="242.0" startX="206.0" startY="-93.0" stroke="#a4121c" strokeWidth="3.0" />
+      <Line endX="206.0" endY="608.0" layoutX="104.0" layoutY="242.0" startX="206.0" startY="-161.0" stroke="#a4121c" strokeWidth="3.0" />
           <TextField fx:id="tfNomInstrument" layoutX="104.0" layoutY="266.0" prefHeight="25.0" prefWidth="108.0" />
-          <TextField fx:id="tfTypeInstrument" layoutX="104.0" layoutY="662.0" prefHeight="25.0" prefWidth="108.0" />
+          <TextField fx:id="tfTitreAjoute" layoutX="126.0" layoutY="652.0" prefHeight="25.0" prefWidth="150.0" />
       <Text layoutX="34.0" layoutY="258.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Entrez un nouveau nom pour cet instrument" />
       <Line endX="336.5" endY="194.0" layoutX="-27.0" layoutY="190.0" startX="27.0" startY="194.0" stroke="#c92626" strokeWidth="2.0" />
       <Text layoutX="41.0" layoutY="430.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Le titre  dans la liste ci-dessous sera supprimé " />
       <ComboBox fx:id="cbTitreaSupprimer" layoutX="83.0" layoutY="467.0" onAction="#RemplissageTvGroupe" prefWidth="150.0" promptText="Titre à supprimer" />
       <Line endX="336.5" endY="194.0" layoutX="-27.0" layoutY="392.0" startX="27.0" startY="194.0" stroke="#c92626" strokeWidth="2.0" />
       <Text layoutX="66.0" layoutY="629.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Entrez le titre à insérer ci-dessous" />
+      <Line endX="786.0" layoutX="238.0" layoutY="80.0" startX="-238.0" stroke="#c92626" strokeWidth="2.0">
+         <effect>
+            <Lighting>
+               <bumpInput>
+                  <Shadow />
+               </bumpInput>
+               <light>
+                  <Light.Distant />
+               </light>
+            </Lighting>
+         </effect>
+      </Line>
+      <TextField fx:id="tfDureeAjoute" layoutX="127.0" layoutY="699.0" prefHeight="25.0" prefWidth="150.0" />
+      <Text layoutX="43.0" layoutY="669.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Le titre --&gt;" wrappingWidth="79.380859375" />
+      <Text layoutX="43.0" layoutY="716.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Sa durée --&gt;" wrappingWidth="79.380859375" />
     </children>
 </AnchorPane>

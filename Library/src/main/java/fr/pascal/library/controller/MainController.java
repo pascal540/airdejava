@@ -43,7 +43,7 @@ public class MainController implements Initializable {
     @FXML
     private Button btnInsert, btnUpdate, btnDelete;
     @FXML
-    private TextField tfNomInstrument, tfNomTypeInstrument;
+    private TextField tfNomInstrument, tfTitreAjoute,tfDureeAjoute;
     // @FXML private TableView<Book> tvBooks;
     @FXML
     private TableView<Rencontre> tvRencontre;
@@ -165,7 +165,7 @@ public class MainController implements Initializable {
     @FXML
     void handleButtonAction(ActionEvent event) throws SQLException {
         if (event.getSource() == btnInsert) {
-            // insertBook();
+            insertTitre();
         } else if (event.getSource() == btnUpdate) {
              updateInstrument();
         } else if (event.getSource() == btnDelete) {
@@ -730,14 +730,7 @@ public class MainController implements Initializable {
      }
 
     
-    // private void insertBook() throws SQLException {
-    // String query = "INSERT INTO book VALUES ('" + tfId.getText() + "', '" +
-    // tfTitle.getText() + "', '"
-    // + tfAuthor.getText() + "', '" + tfYear.getText() + "', '" + tfPages.getText()
-    // + "');";
-    // executeQuery(query);
-    // displayTableView();
-    // }
+    
 
     private void deleteTitre() throws SQLException {
       String query = "DELETE FROM titre WHERE nomTitre = '" + cbTitreaSupprimer.getValue() + "'";
@@ -757,6 +750,13 @@ public class MainController implements Initializable {
     //  
     }
 
+    private void  insertTitre() throws SQLException {
+        String query = "INSERT INTO titre ("+ "idtitre" +"," +"nomTitre"+"," +"duree" +")"
+                + " VALUES" + " (" + "null" + "," +"'"+ tfTitreAjoute.getText()+"'" + "," +tfDureeAjoute.getText() + ")";
+        //  System.out.println(query);          
+         executeQuery(query);               
+    }
+    
     /* Méthode qui permet de factoriser la connection à la BDD, en même temps que
      d'exécuter nos requêtes*/
 
