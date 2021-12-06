@@ -26,7 +26,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.Spinner;//initialValue="1" max="120"
+import javafx.scene.control.Spinner; 
 import javafx.scene.control.cell.PropertyValueFactory;
 
 // import java.lang.reflect.Member;
@@ -253,7 +253,7 @@ public class MainController implements Initializable {
     private ObservableList<Groupe> RemplissageTvGroupe(ActionEvent event) throws SQLException {
 
         String res = cbTitre.getValue();
-        System.out.println(res);
+        // System.out.println(res);
 
         nomGroupeList.clear();
 
@@ -453,7 +453,7 @@ public class MainController implements Initializable {
                  Membre ligneMembre = new Membre();
                  ligneMembre.set_nomMembre(rs.getString("nom_membre"));
                  ligneMembre.set_prenomMembre(rs.getString("prenom_membre"));
-                  System.out.println(rs);
+                //   System.out.println(rs);
 
                 nomMembreList.add(ligneMembre);
 
@@ -541,7 +541,7 @@ public class MainController implements Initializable {
          try {
              ResultSet rs = cs.getResultSet();
              while (rs.next()) {
-                System.out.println(rs);
+                // System.out.println(rs);
                 Titre ligneTitre = new Titre();
                 ligneTitre.set_nomTitre(rs.getString("nomTitre"));
                 ligneTitre.set_duree(rs.getInt("duree"));
@@ -582,7 +582,7 @@ public class MainController implements Initializable {
          try {
              ResultSet rs = cs.getResultSet();
              while (rs.next()) {
-                System.out.println(rs);
+                // System.out.println(rs);
                 Rencontre ligneRencontre = new Rencontre();
                 ligneRencontre.set_nomRencontre(rs.getString("nom_rencontre"));                                                               
                 nomRencontreSuivantNbGroupesList.add(ligneRencontre);
@@ -600,7 +600,7 @@ public class MainController implements Initializable {
          colNomRencontre.setCellValueFactory(new PropertyValueFactory<Rencontre, String>("_nomRencontre"));
          tvRencontre.setItems(nomRencontreSuivantNbGroupesList);
      }
-     
+
      // Affichage des rencontres ou tel instruent est joue 
      private void RemplissageComboBoxInstrument() {
 
@@ -643,7 +643,7 @@ public class MainController implements Initializable {
          try {
              ResultSet rs = cs.getResultSet();
              while (rs.next()) {
-                System.out.println(rs);
+                // System.out.println(rs);
                 Rencontre ligneRencontre = new Rencontre();
                 ligneRencontre.set_nomRencontre(rs.getString("nom_rencontre"));                                                               
                 nomRencontreAvecInstrumentList.add(ligneRencontre);
@@ -743,8 +743,8 @@ public class MainController implements Initializable {
      }
 
     private void updateInstrument() throws SQLException {
-      System.out.println(cbInstrumentCrud);
-      System.out.println(tfNomInstrument.getText());
+    //   System.out.println(cbInstrumentCrud);
+    //   System.out.println(tfNomInstrument.getText());
       String query ="UPDATE instrument SET nom_instrument= '"+ tfNomInstrument.getText() +"'"+
               " where nom_instrument ='" + cbInstrumentCrud.getValue()+"'";
     //   System.out.println( query);
